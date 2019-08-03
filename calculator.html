@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Move Out Calculator</title>
+	<link rel="icon" type="image/png" href="" sizes="">
+	<link rel="stylesheet" type="text/css" href="main.css">
+	<script type="text/javascript" src="./js/main.js" defer></script>
+	<script type="text/javascript" src="./js/calculator.js" defer></script>
+</head>
+
+<body>
+	<header class="site-header">
+		<div class="site-title">Move Out</div>
+	</header>
+	<nav class="site-nav">
+		<a href="index.html">
+			<div class="site-nav-link">Home</div>
+		</a>
+		<a href="calculator.html">
+			<div class="site-nav-link site-nav-link--selected">Calculator</div>
+		</a>
+		<a>
+			<div class="site-nav-link">Articles</div>
+		</a>
+	</nav>
+	<div class="main-content">
+		<div class="input-container" id="current-input-container">
+			<div class="input-section box">
+				<h2>Personal Info</h2>
+				<div class="input-questions">
+					<div class="input-question">
+						<span class="input-question-text">Are you single or married?</span>
+						<select>
+							<option>Single</option>
+							<option>Married</option>
+						</select>
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">Where do you currently live?</span>
+						<select>
+							<option>TN</option>
+						</select>
+						<input type="text" placeholder="Zip Code">
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">Where do you want to live?</span>
+						<select>
+							<option>TN</option>
+						</select>
+						<input type="text" placeholder="Zip Code">
+					</div>
+				</div>
+			</div>
+			<div class="input-section box">
+				<h2>Finances</h2>
+				<div class="input-questions dynamic-table">
+					<div class="dynamic-table-body">
+						<div class="dynamic-table-row">
+							<input type="text" class="dynamic-table-row-label" placeholder="Account Name">
+							<input type="text" class="dynamic-table-row-value" placeholder="$00,000.00">
+							<div class="dynamic-table-remove circle-button"></div>
+						</div>
+					</div>
+					<div class="dynamic-table-add circle-button"></div>
+				</div>
+			</div>
+			<div class="input-section box">
+				<h2>Current Job</h2>
+				<div class="input-questions">
+					<div class="input-question">
+						<span class="input-question-text">How do you want to enter your wage/salary?</span>
+						<select>
+							<option>Hourly Wage / Hours</option>
+							<option>Weekly Salary</option>
+							<option>Monthly Salary</option>
+							<option>Yearly Salary</option>
+						</select>
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">How much do you make every <span>hour</span>?</span>
+						<input type="text"  placeholder="$00,000.00">
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">How many hours do you work in a week?</span>
+						<input type="text"  placeholder="0">
+					</div>
+				</div>
+			</div>
+			<div class="input-section box">
+				<h2>Current Monthly Expenses</h2>
+				<div class="input-questions dynamic-table">
+					<div class="dynamic-table-body">
+						<div class="dynamic-table-row">
+							<input type="text" class="dynamic-table-row-label" placeholder="Expense Name">
+							<input type="text" class="dynamic-table-row-value" placeholder="$00,000.00">
+							<div class="dynamic-table-remove circle-button"></div>
+						</div>
+					</div>
+					<div class="dynamic-table-add circle-button"></div>
+				</div>
+			</div>
+			<div class="input-section box">
+				<h2>One Time Expenses</h2>
+				<div class="input-questions dynamic-table">
+					<div class="dynamic-table-body">
+						<div class="dynamic-table-row">
+							<input type="text" class="dynamic-table-row-label" placeholder="Expense Name">
+							<input type="text" class="dynamic-table-row-value" placeholder="$00,000.00">
+							<div class="dynamic-table-remove circle-button"></div>
+						</div>
+					</div>
+					<div class="dynamic-table-add circle-button"></div>
+				</div>				
+			</div>
+		</div>
+		<div class="input-container" id="future-input-container">
+			<div class="input-section box">
+				<h2>Future Job</h2>
+				<div class="input-questions">
+					<div class="input-question">
+						<span class="input-question-text">How do you want to enter your wage/salary?</span>
+						<select>
+							<option>Hourly Wage / Hours</option>
+							<option>Weekly Salary</option>
+							<option>Monthly Salary</option>
+							<option>Yearly Salary</option>
+						</select>
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">How much do you plan to make every <span>hour</span>?</span>
+						<input type="text" placeholder="$00,000.00">
+					</div>
+					<div class="input-question">
+						<span class="input-question-text">How many hours do you plan to work in a week?</span>
+						<input type="text" placeholder="0">
+					</div>
+				</div>				
+			</div>
+			<div class="input-section box">
+				<h2>Future Monthly Expenses</h2>
+				<div class="input-questions dynamic-table">
+					<div class="dynamic-table-body">
+						<div class="dynamic-table-row">
+							<input type="text" class="dynamic-table-row-label" placeholder="Expense Name">
+							<input type="text" class="dynamic-table-row-value" placeholder="$00,000.00">
+							<div class="dynamic-table-remove circle-button"></div>
+						</div>
+					</div>
+					<div class="dynamic-table-add circle-button"></div>
+				</div>				
+			</div>
+		</div>
+		<div class="output-container">
+			<div class="output-section box">
+				<h2>Results</h2>
+				<div class="output-section-group">
+					<h3>Move Out</h3>
+					<div class="output-section-group-body">
+						<div class="output-section-item">
+							<span class="output-section-label">Total Needed: </span>
+							<span class="output-section-value red-text">$00,000.00</span>
+						</div>
+						<div class="output-section-item">
+							<span class="output-section-label">Surplus: </span>
+							<span class="output-section-value green-text">$00,000.00</span>
+						</div>
+						<div class="output-section-item">
+							<span class="output-section-label">Move Out Date: </span>
+							<span class="output-section-value blue-text">12/30/20</span>
+						</div>
+					</div>
+				</div>
+				<div class="output-section-group">
+					<h3>Monthly</h3>
+					<div class="output-section-group-body">
+						<div class="output-section-item">
+							<span class="output-section-label">Monthly Expenses: </span>
+							<span class="output-section-value red-text">$00,000.00</span>
+						</div>
+						<div class="output-section-item">
+							<span class="output-section-label">Surplus: </span>
+							<span class="output-section-value green-text">$00,000.00</span>
+						</div>
+						<div class="output-section-item">
+							<span class="output-section-label">Monthly Salary: </span>
+							<span class="output-section-value green-text">$00,000.00</span>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="output-section footer-bar" id="current-footer-bar">
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Total Needed: </span>
+			<span class="footer-bar-value red-text">$00,000.00</span>
+		</div>
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Surplus: </span>
+			<span class="footer-bar-value green-text">$00,000.00</span>
+		</div>
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Move Out Date: </span>
+			<span class="footer-bar-value blue-text">12/30/20</span>
+		</div>
+	</div>
+	<div class="output-section footer-bar footer-bar--hidden" id="future-footer-bar">
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Monthly Expenses: </span>
+			<span class="footer-bar-value red-text">$00,000.00</span>
+		</div>
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Monthly Surplus: </span>
+			<span class="footer-bar-value green-text">$00,000.00</span>
+		</div>
+		<div class="footer-bar-section">
+			<span class="footer-bar-label">Monthly Salary: </span>
+			<span class="footer-bar-value blue-text">12/30/20</span>
+		</div>
+	</div>
+</body>
+
+</html>
