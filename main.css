@@ -338,6 +338,10 @@ iframe {
 	color: hsl(196, 77%, 55%);
 }
 
+.disabled {
+	display: none;
+}
+
 .sticky {
   position: fixed!important;
   top: 0;

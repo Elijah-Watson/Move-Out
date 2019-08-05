@@ -1,7 +1,7 @@
 function StickyNavBar() {
 	this.sticky = document.querySelector('.site-nav').offsetTop;
 
-	this.onScroll = function() {
+	this.onScroll = function () {
 		var navBar = document.querySelector('.site-nav');
 		if (window.pageYOffset >= this.sticky) {
 			navBar.classList.add('sticky');
@@ -10,8 +10,8 @@ function StickyNavBar() {
 		}
 	}
 
-	this.init = function() {
-		window.addEventListener('scroll', this.onScroll.bind(this));
+	this.init = function () {
+		window.addEventListener('scroll', this.onScroll);
 	}
 };
 
