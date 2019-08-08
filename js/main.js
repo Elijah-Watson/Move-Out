@@ -1,22 +1,24 @@
-function StickyNavBar() {
-	this.sticky = document.querySelector('.site-nav').offsetTop;
+class StickyNavBar {
+	constructor(element) {
+		this.element = element;
+		this.sticky = this.element.offsetTop;
+	}
 
-	this.onScroll = function () {
-		var navBar = document.querySelector('.site-nav');
+	onScroll() {
 		if (window.pageYOffset >= this.sticky) {
-			navBar.classList.add('sticky');
+			this.element.classList.add('sticky');
 		} else {
-			navBar.classList.remove('sticky');
+			this.element.classList.remove('sticky');
 		}
 	}
 
-	this.init = function () {
-		window.addEventListener('scroll', this.onScroll);
+	init() {
+		window.addEventListener('scroll', () => this.onScroll());
 	}
-};
+}
 
 (function onLoad() {
-	var navBar = new StickyNavBar();
+	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
 	navBar.init();
 })();
 

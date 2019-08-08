@@ -1,153 +1,179 @@
-var userData = {
-	maritalStatus: null,
-	finances: [],
-	oneTimeExpenses: [],
-	current: {
-		state: null,
-		zipCode: null,
-		salesTaxPercent: null,
-		job: {
-			weeklyPay: null,
-			monthlyPay: null,
-			yearlyPay: null
-		},
-		incomeTaxValue: null,
-		monthlyExpenses: [],
-	},
-	future: {
-		state: null,
-		zipCode: null,
-		salesTaxPercent: null,
-		job: {
-			weeklyPay: null,
-			monthlyPay: null,
-			yearlyPay: null
-		},
-		incomeTaxValue: null,
-		monthlyExpenses: [],
-	},
-	updateCurrentSalesTax: function () {
-		var postalCode = this.current.zipCode;
-		var data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
-		var httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = () => {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status === 200) {
-					var response = JSON.parse(httpRequest.responseText);
-					this.current.salesTaxPercent = response.totalRate;
-				} else {
-					console.log('error');
-				}
+class User {
+	constructor() {
+		this.data = {
+			maritalStatus: null,
+			finances: [],
+			oneTimeExpenses: [],
+			current: {
+				state: null,
+				zipCode: null,
+				salesTaxPercent: null,
+				job: {
+					weeklyPay: null,
+					monthlyPay: null,
+					yearlyPay: null
+				},
+				incomeTaxValue: null,
+				monthlyExpenses: []
+			},
+			future: {
+				state: null,
+				zipCode: null,
+				salesTaxPercent: null,
+				job: {
+					weeklyPay: null,
+					monthlyPay: null,
+					yearlyPay: null
+				},
+				incomeTaxValue: null,
+				monthlyExpenses: []
 			}
-		};
-		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
-		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
-		httpRequest.send();
-	},
-	updateFutureSalesTax: function () {
-		var postalCode = this.future.zipCode;
-		var data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
-		var httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = () => {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status === 200) {
-					var response = JSON.parse(httpRequest.responseText);
-					this.future.salesTaxPercent = response.totalRate;
-				} else {
-					console.log('error');
-				}
-			}
-		};
-		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
-		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
-		httpRequest.send();
-	},
-	updateCurrentIncomeTax: function () {
-		var payRate = this.current.job.yearlyPay;
-		var filingStatus = this.maritalStatus;
-		var state = this.current.state;
-		var data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
-		var httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = () => {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status === 200) {
-					var response = JSON.parse(httpRequest.responseText);
-					var incomeTaxValue = response.annual.federal.amount + response.annual.fica.amount;
-					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
-					this.current.incomeTaxValue = incomeTaxValue;
-				} else {
-					console.log('error');
-				}
-			}
-		};
-		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
-		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.send(data);
-	},
-	updateFutureIncomeTax: function () {
-		var payRate = this.future.job.yearlyPay;
-		var filingStatus = this.maritalStatus;
-		var state = this.future.state;
-		var data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
-		var httpRequest = new XMLHttpRequest();
-		httpRequest.onreadystatechange = () => {
-			if (httpRequest.readyState === XMLHttpRequest.DONE) {
-				if (httpRequest.status === 200) {
-					var response = JSON.parse(httpRequest.responseText);
-					var incomeTaxValue = response.annual.federal.amount + response.annual.fica.amount;
-					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
-					this.future.incomeTaxValue = incomeTaxValue;
-				} else {
-					console.log('error');
-				}
-			}
-		};
-		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
-		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.send(data);
-	}
-}
-
-function FooterBarAnimations() {
-	this.animate = function () {
-		var currentFooterBar = document.getElementById('current-footer-bar');
-		var futureFooterBar = document.getElementById('future-footer-bar');
-		var futureInputContainer = document.getElementById('future-input-container');
-		var outputContainer = document.querySelector('.output-container');
-		var windowHeight = window.innerHeight;
-		var adjustedWindowHeight = windowHeight - currentFooterBar.offsetHeight;
-
-		var outputContainerPositionFromTop = outputContainer.getBoundingClientRect().top;
-		var futureInputContainerPositionFromTop = futureInputContainer.getBoundingClientRect().top;
-
-		if (futureInputContainerPositionFromTop - adjustedWindowHeight >= 0) {
-			currentFooterBar.classList.remove('footer-bar--hidden');
-			futureFooterBar.classList.add('footer-bar--hidden');
-		} else if (futureInputContainerPositionFromTop - adjustedWindowHeight <= 0 && outputContainerPositionFromTop - adjustedWindowHeight >= 0) {
-			currentFooterBar.classList.add('footer-bar--hidden');
-			futureFooterBar.classList.remove('footer-bar--hidden');
-		} else if (outputContainerPositionFromTop - adjustedWindowHeight <= 0) {
-			futureFooterBar.classList.add('footer-bar--hidden');
-			currentFooterBar.classList.add('footer-bar--hidden');
 		}
 	}
 
-	this.init = function () {
-		window.addEventListener('scroll', this.animate);
+	updateCurrentSalesTax() {
+		let postalCode = this.data.current.zipCode;
+		let data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
+		let httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = () => {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200) {
+					let response = JSON.parse(httpRequest.responseText);
+					this.data.current.salesTaxPercent = response.totalRate;
+				} else {
+					console.log('error');
+				}
+			}
+		};
+		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
+		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
+		httpRequest.send();
+	}
+	updateFutureSalesTax() {
+		let postalCode = this.data.future.zipCode;
+		let data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
+		let httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = () => {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200) {
+					let response = JSON.parse(httpRequest.responseText);
+					this.data.future.salesTaxPercent = response.totalRate;
+				} else {
+					console.log('error');
+				}
+			}
+		};
+		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
+		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
+		httpRequest.send();
+	}
+	updateCurrentIncomeTax() {
+		let payRate = this.data.current.job.yearlyPay;
+		let filingStatus = this.data.maritalStatus;
+		let state = this.data.current.state;
+		let data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
+		let httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = () => {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200) {
+					let response = JSON.parse(httpRequest.responseText);
+					let incomeTaxValue = response.annual.federal.amount + response.annual.fica.amount;
+					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
+					this.data.current.incomeTaxValue = incomeTaxValue;
+				} else {
+					console.log('error');
+				}
+			}
+		};
+		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
+		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
+		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		httpRequest.send(data);
+	}
+	updateFutureIncomeTax() {
+		let payRate = this.data.future.job.yearlyPay;
+		let filingStatus = this.data.maritalStatus;
+		let state = this.data.future.state;
+		let data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
+		let httpRequest = new XMLHttpRequest();
+		httpRequest.onreadystatechange = () => {
+			if (httpRequest.readyState === XMLHttpRequest.DONE) {
+				if (httpRequest.status === 200) {
+					let response = JSON.parse(httpRequest.responseText);
+					let incomeTaxValue = response.annual.federal.amount + response.annual.fica.amount;
+					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
+					this.data.future.incomeTaxValue = incomeTaxValue;
+				} else {
+					console.log('error');
+				}
+			}
+		};
+		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
+		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
+		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+		httpRequest.send(data);
+	}
+	init() {
+		let personalInfoSection = document.querySelector('#personal-info');
+		personalInfoSection.addEventListener('change', (e) => {
+			if (e.target && (e.target.nodeName === 'SELECT' || e.target.nodeName === 'INPUT')) {
+				console.log('Personal Info');
+			}
+		});
+
+		let otherInputSections = document.querySelectorAll('.input-section:not(#personal-info)');
+		otherInputSections.forEach((element) => {
+			element.addEventListener('change', (e) => {
+				if (e.target && (e.target.nodeName === 'SELECT' || e.target.nodeName === 'INPUT')) {
+					console.log('Other Info - Input');
+				}
+			});
+			element.addEventListener('click', (e) => {
+				if (e.target && (e.target.classList.contains('dynamic-table-add') || e.target.classList.contains('dynamic-table-remove'))) {
+					console.log('Other Info - Button');
+				}
+			});
+		});
 	}
 }
 
-function DynamicTableActions() {
-	this.addDynamicTableRow = function (e) {
-		var addButton = e.target;
-		var dynamicTable = addButton.parentNode;
-		var tableBody = dynamicTable.querySelector('.dynamic-table-body');
-		var tableRow = document.createElement('div');
-		var labelInput = document.createElement('input');
-		var valueInput = document.createElement('input');
-		var removeButton = document.createElement('div');
+class FooterBarAnimations {
+	constructor(...args) {
+		this.sections = [...args];
+	}
+
+	animate() {
+		let windowHeight = window.innerHeight;
+		let adjustedWindowHeight = windowHeight - this.sections[0][0].offsetHeight;
+		let previousSection = null;
+		for (let i = 0; i < this.sections.length; i++) {
+			let previousSectionPosition = previousSection ? previousSection[1].getBoundingClientRect().top : 0;
+			let currentSection = this.sections[i];
+			let currentSectionPosition = currentSection[1] ? currentSection[1].getBoundingClientRect().top : adjustedWindowHeight;
+			if (currentSection[0]) currentSection[0].classList.add('footer-bar--hidden');
+			if (previousSectionPosition - adjustedWindowHeight < 0 && currentSectionPosition - adjustedWindowHeight >= 0) {
+				if (previousSection[0]) previousSection[0].classList.remove('footer-bar--hidden');
+			}
+			previousSection = currentSection;
+		}
+	}
+
+	init() {
+		window.addEventListener('scroll', () => this.animate());
+	}
+}
+
+class DynamicTableActions {
+	constructor(dynamicTable) {
+		this.dynamicTable = dynamicTable;
+	}
+
+	addDynamicTableRow(e) {
+		let tableBody = this.dynamicTable.querySelector('.dynamic-table-body');
+		let tableRow = document.createElement('div');
+		let labelInput = document.createElement('input');
+		let valueInput = document.createElement('input');
+		let removeButton = document.createElement('div');
 		tableRow.classList.add('dynamic-table-row');
 		labelInput.type = 'text';
 		labelInput.placeholder = 'Name';
@@ -162,45 +188,43 @@ function DynamicTableActions() {
 		tableBody.appendChild(tableRow);
 	}
 
-	this.removeDynamicTableRow = function (e) {
-		var removeButton = e.target;
-		var tableRow = removeButton.parentNode;
-		var tableBody = tableRow.parentNode;
-		var tableRows = tableBody.querySelectorAll('.dynamic-table-row');
+	removeDynamicTableRow(e) {
+		let removeButton = e.target;
+		let tableRow = removeButton.parentNode;
+		let tableBody = this.dynamicTable.querySelector('.dynamic-table-body');
+		let tableRows = tableBody.querySelectorAll('.dynamic-table-row');
 		if (tableRows.length < 2) {
-			var tableRowInputs = tableRow.querySelectorAll('input');
-			for (var i = 0; i < tableRowInputs.length; i++) {
+			let tableRowInputs = tableRow.querySelectorAll('input');
+			for (let i = 0; i < tableRowInputs.length; i++) {
 				tableRowInputs[i].value = '';
 			}
 		} else {
-			tableRow.remove();
 			// May need to clear values first to trigger event listener
+			tableRow.remove();
 		}
 	}
 
-	this.init = function () {
-		var dynamicTables = document.querySelectorAll('.dynamic-table');
-		for (var i = 0; i < dynamicTables.length; i++) {
-			dynamicTables[i].addEventListener('click', (e) => {
-				if (e.target && e.target.classList.contains('dynamic-table-remove')) {
-					this.removeDynamicTableRow(e);
-				}
-			});
-		}
-		var addButtons = document.querySelectorAll('.dynamic-table-add');
-		for (var i = 0; i < addButtons.length; i++) {
-			addButtons[i].addEventListener('click', this.addDynamicTableRow);
-		}
+	init() {
+		this.dynamicTable.addEventListener('click', (e) => {
+			if (e.target && e.target.classList.contains('dynamic-table-remove')) {
+				this.removeDynamicTableRow(e);
+			} else if (e.target && e.target.classList.contains('dynamic-table-add')) {
+				this.addDynamicTableRow(e);
+			}
+		});
 	}
 }
 
-function JobInputSectionActions() {
-	this.determineMode = function (e) {
-		var jobInputSection = e.currentTarget;
-		var hoursQuestion = jobInputSection.querySelector('.job-input-section-question-hours');
-		var wageQuestion = jobInputSection.querySelector('.job-input-section-question-wage');
-		var wageQuestionText = wageQuestion.querySelector('.input-question-text');
-		var mode = e.target.value;
+class JobInputSectionActions {
+	constructor(jobInputSection) {
+		this.jobInputSection = jobInputSection;
+	}
+
+	determineMode(e) {
+		let hoursQuestion = this.jobInputSection.querySelector('.job-input-section-question-hours');
+		let wageQuestion = this.jobInputSection.querySelector('.job-input-section-question-wage');
+		let wageQuestionText = wageQuestion.querySelector('.input-question-text');
+		let mode = e.target.value;
 		switch (mode) {
 			case 'hourly':
 				hoursQuestion.classList.remove('disabled');
@@ -225,20 +249,17 @@ function JobInputSectionActions() {
 		}
 	}
 
-	this.init = function () {
-		var jobInputSections = document.querySelectorAll('.job-input-section');
-		for (var i = 0; i < jobInputSections.length; i++) {
-			jobInputSections[i].addEventListener('change', (e) => {
-				if (e.target && e.target.nodeName === 'SELECT') {
-					this.determineMode(e);
-				}
-			});
+	init() {
+		this.jobInputSection.addEventListener('change', (e) => {
+			if (e.target && e.target.nodeName === 'SELECT') {
+				this.determineMode(e);
+			}
+		});
 
-			// This triggers the previously set up event listener once in case select value is preserved
-			// There may be a better way to do this...
-			var e = new Event('change', { 'bubbles': true });
-			jobInputSections[i].querySelector('select').dispatchEvent(e);
-		}
+		// This triggers the previously set up event listener once in case select value is preserved
+		// There may be a better way to do this...
+		let e = new Event('change', { 'bubbles': true });
+		this.jobInputSection.querySelector('select').dispatchEvent(e);
 	}
 }
 
@@ -247,10 +268,30 @@ function calculateAll() {
 }
 
 (function onLoad() {
-	var footerBar = new FooterBarAnimations();
+	let currentFooterBar = document.getElementById('current-footer-bar');
+	let currentInputContainer = document.getElementById('current-input-container');
+	let futureFooterBar = document.getElementById('future-footer-bar');
+	let futureInputContainer = document.getElementById('future-input-container');
+	let outputContainer = document.querySelector('.output-container');
+	let footerBar = new FooterBarAnimations([currentFooterBar, currentInputContainer], [futureFooterBar, futureInputContainer], [null, outputContainer]);
 	footerBar.init();
-	var dynamicTables = new DynamicTableActions();
-	dynamicTables.init();
-	var jobInputSections = new JobInputSectionActions();
-	jobInputSections.init();
+
+	let dynamicTables = [];
+	let dynamicTableElements = document.querySelectorAll('.dynamic-table');
+	dynamicTableElements.forEach((dynamicTableElement) => {
+		let temp = new DynamicTableActions(dynamicTableElement);
+		temp.init();
+		dynamicTables.push(temp);
+	});
+
+	let jobInputSections = [];
+	let jobInputSectionElements = document.querySelectorAll('.job-input-section');
+	jobInputSectionElements.forEach((jobInputSectionElement) => {
+		let temp = new JobInputSectionActions(jobInputSectionElement);
+		temp.init();
+		jobInputSections.push(temp);
+	});
+
+	let user = new User();
+	user.init();
 })();
