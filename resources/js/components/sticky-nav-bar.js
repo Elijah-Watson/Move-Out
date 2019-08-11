@@ -1,4 +1,4 @@
-class StickyNavBar {
+export class StickyNavBar {
 	constructor(element) {
 		this.element = element;
 		this.sticky = this.element.offsetTop;
@@ -16,9 +16,3 @@ class StickyNavBar {
 		window.addEventListener('scroll', () => this.onScroll());
 	}
 }
-
-(function onLoad() {
-	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
-	navBar.init();
-})();
-

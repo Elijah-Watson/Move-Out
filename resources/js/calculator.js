@@ -1,3 +1,6 @@
+import '../css/main.css';
+import { StickyNavBar } from './components/sticky-nav-bar';
+
 class User {
 	constructor() {
 		this.data = {
@@ -268,6 +271,9 @@ function calculateAll() {
 }
 
 (function onLoad() {
+	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
+	navBar.init();
+
 	let currentFooterBar = document.getElementById('current-footer-bar');
 	let currentInputContainer = document.getElementById('current-input-container');
 	let futureFooterBar = document.getElementById('future-footer-bar');

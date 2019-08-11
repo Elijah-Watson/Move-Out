@@ -244,7 +244,7 @@ select {
 	-moz-appearance: none;
 	-webkit-appearance: none;
 	appearance: none;
-	background-image: url(./assets/icons/down-triangle-black.png);
+	background-image: url(./images/down-triangle-black.png);
 	background-size: 0.8em;
 	background-repeat: no-repeat;
 	background-position: right 0.8em center;
