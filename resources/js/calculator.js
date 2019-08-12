@@ -184,7 +184,8 @@ class DynamicTableActions {
 		valueInput.type = 'text';
 		valueInput.placeholder = '$00,000.00';
 		valueInput.classList.add('dynamic-table-row-value');
-		removeButton.classList.add('dynamic-table-remove', 'circle-button');
+		removeButton.classList.add('dynamic-table-remove');
+		removeButton.classList.add('circle-button');
 		tableRow.appendChild(labelInput);
 		tableRow.appendChild(valueInput);
 		tableRow.appendChild(removeButton);
@@ -203,7 +204,7 @@ class DynamicTableActions {
 			}
 		} else {
 			// May need to clear values first to trigger event listener
-			tableRow.remove();
+			tableRow.parentNode.removeChild(tableRow);
 		}
 	}
 
@@ -259,10 +260,7 @@ class JobInputSectionActions {
 			}
 		});
 
-		// This triggers the previously set up event listener once in case select value is preserved
-		// There may be a better way to do this...
-		let e = new Event('change', { 'bubbles': true });
-		this.jobInputSection.querySelector('select').dispatchEvent(e);
+		// Find a way to deal with saved input data and page reloads
 	}
 }
 
