@@ -373,6 +373,7 @@ iframe {
 	border: none;
 	position: relative;
 
+	cursor: pointer;
 	background-color: hsl(0,0%,80%);
 	color: hsl(0,0%,30%);
 }
