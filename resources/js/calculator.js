@@ -47,7 +47,7 @@ class User {
 					let response = JSON.parse(httpRequest.responseText);
 					this.data.current.salesTaxPercent = response.totalRate;
 				} else {
-					console.log('error');
+					console.log(JSON.parse(httpRequest.responseText));
 				}
 			}
 		};
@@ -68,7 +68,7 @@ class User {
 					let response = JSON.parse(httpRequest.responseText);
 					this.data.future.salesTaxPercent = response.totalRate;
 				} else {
-					console.log('error');
+					console.log(JSON.parse(httpRequest.responseText));
 				}
 			}
 		};
@@ -94,7 +94,7 @@ class User {
 					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
 					this.data.current.incomeTaxValue = incomeTaxValue;
 				} else {
-					console.log('error');
+					console.log(JSON.parse(httpRequest.responseText));
 				}
 			}
 		};
@@ -120,7 +120,7 @@ class User {
 					if (state !== 'TN' && state !== 'NH') { incomeTaxValue += response.annual.state.amount };
 					this.data.future.incomeTaxValue = incomeTaxValue;
 				} else {
-					console.log('error');
+					console.log(JSON.parse(httpRequest.responseText));
 				}
 			}
 		};
@@ -310,12 +310,4 @@ function calculateAll() {
 
 	let user = new User();
 	user.init();
-	user.data.current.zipCode = '37379';
-	user.updateCurrentSalesTax();
-	setTimeout(() => {console.log(user.data.current.salesTaxPercent)}, 5000);
-	user.data.maritalStatus = 'single';
-	user.data.current.state = 'TN';
-	user.data.current.job.yearlyPay = 32500;
-	user.updateCurrentIncomeTax();
-	setTimeout(() => {console.log(user.data.current.incomeTaxValue)}, 5000);
 })();
