@@ -344,6 +344,7 @@ iframe {
 
 .sticky {
   position: fixed!important;
+  width: 100%;
   top: 0;
 }
 

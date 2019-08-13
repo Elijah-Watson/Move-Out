@@ -36,7 +36,10 @@ class User {
 
 	updateCurrentSalesTax() {
 		let postalCode = this.data.current.zipCode;
-		let data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
+		let data = {
+			"country": "USA",
+			"postalCode": postalCode
+		};
 		let httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = () => {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -48,13 +51,16 @@ class User {
 				}
 			}
 		};
-		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
-		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
-		httpRequest.send();
+		httpRequest.open('POST', '/.netlify/functions/sales-tax');
+		httpRequest.setRequestHeader('Content-type', 'application/json');
+		httpRequest.send(JSON.stringify(data));
 	}
 	updateFutureSalesTax() {
 		let postalCode = this.data.future.zipCode;
-		let data = '?country=USA&postalCode=' + encodeURIComponent(postalCode);
+		let data = {
+			"country": "USA",
+			"postalCode": postalCode
+		};
 		let httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = () => {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -66,15 +72,19 @@ class User {
 				}
 			}
 		};
-		httpRequest.open('GET', 'https://rest.avatax.com/api/v2/taxrates/bypostalcode' + data);
-		httpRequest.setRequestHeader('Authorization', 'Basic MjAwMDExNDEwMjo0N0MxQ0UwRTNGRUFCMkE2');
-		httpRequest.send();
+		httpRequest.open('POST', '/.netlify/functions/sales-tax');
+		httpRequest.setRequestHeader('Content-type', 'application/json');
+		httpRequest.send(JSON.stringify(data));
 	}
 	updateCurrentIncomeTax() {
 		let payRate = this.data.current.job.yearlyPay;
 		let filingStatus = this.data.maritalStatus;
 		let state = this.data.current.state;
-		let data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
+		let data = {
+			"pay_rate": payRate,
+			"filing_status": filingStatus,
+			"state": state
+		};
 		let httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = () => {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -88,16 +98,19 @@ class User {
 				}
 			}
 		};
-		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
-		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.send(data);
+		httpRequest.open('POST', '/.netlify/functions/income-tax');
+		httpRequest.setRequestHeader('Content-Type', 'application/json');
+		httpRequest.send(JSON.stringify(data));
 	}
 	updateFutureIncomeTax() {
 		let payRate = this.data.future.job.yearlyPay;
 		let filingStatus = this.data.maritalStatus;
 		let state = this.data.future.state;
-		let data = 'pay_rate=' + encodeURIComponent(payRate) + '&filing_status=' + encodeURIComponent(filingStatus) + '&state=' + encodeURIComponent(state);
+		let data = {
+			"pay_rate": payRate,
+			"filing_status": filingStatus,
+			"state": state
+		};
 		let httpRequest = new XMLHttpRequest();
 		httpRequest.onreadystatechange = () => {
 			if (httpRequest.readyState === XMLHttpRequest.DONE) {
@@ -111,10 +124,9 @@ class User {
 				}
 			}
 		};
-		httpRequest.open('POST', 'https://taxee.io/api/v2/calculate/2019');
-		httpRequest.setRequestHeader('Authorization', 'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJBUElfS0VZX01BTkFHRVIiLCJodHRwOi8vdGF4ZWUuaW8vdXNlcl9pZCI6IjVjNjE4YjkxNjcxZGY0NzhhMjU3MTk4MSIsImh0dHA6Ly90YXhlZS5pby9zY29wZXMiOlsiYXBpIl0sImlhdCI6MTU0OTg5NjU5M30.EJV8dbX-nohirPMxSK4aOaLDNj5cVsDWlLYucMgvu7Y');
-		httpRequest.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-		httpRequest.send(data);
+		httpRequest.open('POST', '/.netlify/functions/income-tax');
+		httpRequest.setRequestHeader('Content-Type', 'application/json');
+		httpRequest.send(JSON.stringify(data));
 	}
 	init() {
 		let personalInfoSection = document.querySelector('#personal-info');
@@ -298,4 +310,12 @@ function calculateAll() {
 
 	let user = new User();
 	user.init();
+	user.data.current.zipCode = '37379';
+	user.updateCurrentSalesTax();
+	setTimeout(() => {console.log(user.data.current.salesTaxPercent)}, 5000);
+	user.data.maritalStatus = 'single';
+	user.data.current.state = 'TN';
+	user.data.current.job.yearlyPay = 32500;
+	user.updateCurrentIncomeTax();
+	setTimeout(() => {console.log(user.data.current.incomeTaxValue)}, 5000);
 })();

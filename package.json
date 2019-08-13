@@ -4,8 +4,10 @@
 	"private": true,
 	"description": "",
 	"scripts": {
-		"start": "webpack-dev-server --config webpack.dev.js --open",
-		"build": "webpack --config webpack.prod.js"
+		"lambda-serve": "netlify-lambda serve functions-source",
+		"lambda-build": "netlify-lambda build functions-source",
+		"start": "concurrently \"webpack-dev-server --config webpack.dev.js --open\" \"npm run lambda-serve\"",
+		"build": "webpack --config webpack.prod.js && npm run lambda-build"
 	},
 	"keywords": [],
 	"author": "Elijah Watson",
@@ -15,11 +17,14 @@
 		"@babel/preset-env": "^7.5.5",
 		"babel-loader": "^8.0.6",
 		"clean-webpack-plugin": "^3.0.0",
+		"concurrently": "^4.1.1",
 		"css-loader": "^3.2.0",
+		"dotenv": "^8.0.0",
 		"file-loader": "^4.2.0",
 		"html-loader": "^0.5.5",
 		"html-webpack-plugin": "^3.2.0",
 		"mini-css-extract-plugin": "^0.8.0",
+		"netlify-lambda": "^1.5.1",
 		"optimize-css-assets-webpack-plugin": "^5.0.3",
 		"style-loader": "^1.0.0",
 		"webpack": "^4.39.1",
@@ -28,6 +33,7 @@
 		"webpack-merge": "^4.2.1"
 	},
 	"dependencies": {
-		"core-js": "^3.2.0"
+		"core-js": "^3.2.0",
+		"node-fetch": "^2.6.0"
 	}
 }
