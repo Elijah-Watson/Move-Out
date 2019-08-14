@@ -6,9 +6,9 @@ export class StickyNavBar {
 
 	onScroll() {
 		if (window.pageYOffset >= this.sticky) {
-			this.element.parentNode.classList.add('sticky');
+			this.element.classList.add('sticky');
 		} else {
-			this.element.parentNode.classList.remove('sticky');
+			this.element.classList.remove('sticky');
 		}
 	}
 
