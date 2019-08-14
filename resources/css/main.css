@@ -571,13 +571,15 @@ iframe {
 	width: 100%;
 	background-color: hsl(0, 0%, 100%);
 	border-top: 0.1em solid hsl(199, 92%, 56%);
+	z-index: 600;
 
 	transform: none;
-
-	transition: transform 0.5s ease-out;
+	transition: transform 0.25s ease-in-out;
+	transition-delay: 0.25s;
 }
 
 .footer-bar--hidden {
+	transition-delay: 0s;
 	transform: translateY(100%);
 }
 

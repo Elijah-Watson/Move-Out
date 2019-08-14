@@ -159,18 +159,27 @@ class FooterBarAnimations {
 
 	animate() {
 		let windowHeight = window.innerHeight;
-		let adjustedWindowHeight = windowHeight - this.sections[0][0].offsetHeight;
-		let previousSection = null;
-		for (let i = 0; i < this.sections.length; i++) {
-			let previousSectionPosition = previousSection ? previousSection[1].getBoundingClientRect().top : 0;
-			let currentSection = this.sections[i];
-			let currentSectionPosition = currentSection[1] ? currentSection[1].getBoundingClientRect().top : adjustedWindowHeight;
-			if (currentSection[0]) currentSection[0].classList.add('footer-bar--hidden');
-			if (previousSectionPosition - adjustedWindowHeight < 0 && currentSectionPosition - adjustedWindowHeight >= 0) {
-				if (previousSection[0]) previousSection[0].classList.remove('footer-bar--hidden');
+		let sections = this.sections;
+		let adjustedWindowHeight = windowHeight - sections[0][0].offsetHeight;
+		let highestPosition = -Infinity;
+		let highestBar = null;
+		let others = [];
+		for (let i = 0; i < sections.length; i++) {
+			let section = sections[i];
+			let position = section[1].getBoundingClientRect().top - adjustedWindowHeight;
+			if (position >= highestPosition && position <= 0) {
+				if (others[0]) others.push(others[0]);
+				if (highestBar) others[0] = highestBar;
+				highestPosition = position;
+				highestBar = section[0];
+			} else {
+				others.push(section[0]);
 			}
-			previousSection = currentSection;
 		}
+		others.forEach(other => {
+			if (other) other.classList.add('footer-bar--hidden');
+		});
+		if (highestBar) highestBar.classList.remove('footer-bar--hidden');
 	}
 
 	init() {
