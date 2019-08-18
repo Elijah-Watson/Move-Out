@@ -160,12 +160,13 @@ class FooterBarAnimations {
 	animate() {
 		let windowHeight = window.innerHeight;
 		let sections = this.sections;
-		let adjustedWindowHeight = windowHeight - sections[0][0].offsetHeight;
 		let highestPosition = -Infinity;
 		let highestBar = null;
 		let others = [];
 		for (let i = 0; i < sections.length; i++) {
 			let section = sections[i];
+			let barHeight = section[0] ? section[0].offsetHeight : highestBar.offsetHeight;
+			let adjustedWindowHeight = windowHeight - barHeight;
 			let position = section[1].getBoundingClientRect().top - adjustedWindowHeight;
 			if (position >= highestPosition && position <= 0) {
 				if (others[0]) others.push(others[0]);
@@ -202,9 +203,11 @@ class DynamicTableActions {
 		labelInput.type = 'text';
 		labelInput.placeholder = 'Name';
 		labelInput.classList.add('dynamic-table-row-label');
+		labelInput.classList.add('label-input');
 		valueInput.type = 'text';
 		valueInput.placeholder = '$00,000.00';
 		valueInput.classList.add('dynamic-table-row-value');
+		valueInput.classList.add('currency-input');
 		removeButton.classList.add('dynamic-table-remove');
 		removeButton.classList.add('circle-button');
 		tableRow.appendChild(labelInput);
