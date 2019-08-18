@@ -640,7 +640,9 @@ select.state-select {
 	html {
 		font-size: 50%;
 	}
+}
 
+@media only screen and (max-width: 415px) {
 	.input-container .input-question .input-question-text {
 		flex: 0 0 100%;
 	}
