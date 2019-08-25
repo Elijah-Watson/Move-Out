@@ -108,6 +108,7 @@ function validateZipCode(input) {
 }
 
 async function getSalesTax(postalCode) {
+	if (!postalCode) return 0;
 	const response = await fetch('/.netlify/functions/sales-tax', {
 		method: 'POST',
 		mode: 'cors',
@@ -124,6 +125,7 @@ async function getSalesTax(postalCode) {
 }
 
 async function getIncomeTax(payRate, filingStatus, state) {
+	if (!payRate) return 0;
 	const response = await fetch('/.netlify/functions/income-tax', {
 		method: 'POST',
 		mode: 'cors',
@@ -141,7 +143,6 @@ async function getIncomeTax(payRate, filingStatus, state) {
 	if (state !== 'TN' && state !== 'NH') {
 		incomeTaxValue += json.annual.state.amount;
 	}
-	;
 	return incomeTaxValue;
 }
 
@@ -281,6 +282,7 @@ function setJobSectionEventListeners(section, setter) {
 		let hoursInput = section.querySelector('.job-input-section-question-hours input');
 		let monthlySalary = calculateMonthlySalary(mode, wageInput, hoursInput);
 		setter(monthlySalary);
+		setIncomeTaxes();
 		calculateAll();
 	});
 }
@@ -289,6 +291,7 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 	let maritalStatusSelect = section.querySelector('.marital-status-select');
 	maritalStatusSelect.addEventListener('change', e => {
 		maritalStatusSetter(e.target.value);
+		setIncomeTaxes();
 		calculateAll();
 	});
 
@@ -296,12 +299,14 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 	let currentStateSelect = currentSection.querySelector('.state-select');
 	currentStateSelect.addEventListener('change', e => {
 		currentStateSetter(e.target.value);
+		setIncomeTaxes();
 		calculateAll();
 	});
 	let currentZipCodeInput = currentSection.querySelector('.zip-code-input');
 	currentZipCodeInput.addEventListener('change', e => {
 		let validatedValue = validateZipCode(e.target);
 		currentZipCodeSetter(validatedValue);
+		setSalesTaxes();
 		calculateAll();
 	});
 
@@ -309,12 +314,14 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 	let futureStateSelect = futureSection.querySelector('.state-select');
 	futureStateSelect.addEventListener('change', e => {
 		futureStateSetter(e.target.value);
+		setIncomeTaxes();
 		calculateAll();
 	});
 	let futureZipCodeInput = futureSection.querySelector('.zip-code-input');
 	futureZipCodeInput.addEventListener('change', e => {
 		let validatedValue = validateZipCode(e.target);
 		futureZipCodeSetter(validatedValue);
+		setSalesTaxes();
 		calculateAll();
 	});
 }
