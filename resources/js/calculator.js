@@ -329,7 +329,7 @@ async function setSalesTaxes() {
 		.catch(error => console.error(error));	
 
 	taxes.current.salesTaxPercent = await currentSalesTax;
-	taxes.current.salesTaxPercent = await futureSalesTax;
+	taxes.future.salesTaxPercent = await futureSalesTax;
 }
 
 async function setIncomeTaxes() {
