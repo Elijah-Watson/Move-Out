@@ -576,17 +576,17 @@ select.state-select {
 	display: block;
 }
 
-.output-section-group {
+.box .output-section-group {
 	margin: 0.5em 1em;
 }
 
-.output-section-group-body {
+.box .output-section-group-body {
 	display: flex;
 	justify-content: space-around;
 	margin: 1em 0;
 }
 
-.output-section-item {
+.box .output-section-item {
 	border: 0.2em solid hsl(0, 0%, 50%);
 	border-radius: 0.2em;
 	padding: 1em 0.5em;
@@ -600,8 +600,8 @@ select.state-select {
 	justify-content: center;
 }
 
-.output-section-label,
-.output-section-value {
+.box .output-section-label,
+.box .output-section-value {
 	margin: 0.5em 0.25em;
 }
 
@@ -634,10 +634,6 @@ select.state-select {
 .footer-bar-section {
 	padding: 1em 1em;
 	text-align: center;
-}
-
-.footer-bar-value {
-	font-weight: bold;
 }
 
 @media only screen and (max-width: 635px) {

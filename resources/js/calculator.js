@@ -39,9 +39,117 @@ const taxes = {
 	}
 }
 
-async function calculateAll() {
-	console.log(inputValues);
-	console.log(taxes);
+function setTotalNeeded(value) {
+	if (!value || isNaN(value) || value < 0) value = 0;
+	[...document.querySelectorAll('.total-needed')].forEach(parent => {
+		let elementValue = parent.querySelector('.output-section-value');
+		let formattedValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+		elementValue.innerText = formattedValue;
+	});
+}
+
+function setSurplus(value) {
+	if (!value || isNaN(value)) value = 0;
+	[...document.querySelectorAll('.surplus')].forEach(parent => {
+		let elementLabel = parent.querySelector('.output-section-label');
+		let elementValue = parent.querySelector('.output-section-value');
+		if (value < 0) {
+			elementLabel.innerText = 'Defecit: ';
+			elementValue.classList.remove('green-text');
+			elementValue.classList.add('red-text');
+		} else {
+			elementLabel.innerText = 'Surplus: ';
+			elementValue.classList.remove('red-text');
+			elementValue.classList.add('green-text');
+		}
+		let formattedValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+		elementValue.innerText = formattedValue;
+	});
+}
+
+function setMoveOutDate(daysFromNow) {
+	if (!daysFromNow || isNaN(daysFromNow) || daysFromNow < 0) daysFromNow = 0;
+	[...document.querySelectorAll('.move-out-date')].forEach(parent => {
+		let elementValue = parent.querySelector('.output-section-value');
+		let today = new Date();
+		let moveOutDate = new Date(new Date().setDate(today.getDate() + daysFromNow));
+		elementValue.innerText = moveOutDate.toLocaleDateString('en-US', { dateStyle: 'long', timeStyle: 'short' });
+	});
+}
+
+function setMonthlyExpenses(value) {
+	if (!value || isNaN(value) || value < 0) value = 0;
+	[...document.querySelectorAll('.monthly-expenses')].forEach(parent => {
+		let elementValue = parent.querySelector('.output-section-value');
+		let formattedValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+		elementValue.innerText = formattedValue;
+	});
+}
+
+function setMonthlySurplus(value) {
+	if (!value || isNaN(value)) value = 0;
+	[...document.querySelectorAll('.monthly-surplus')].forEach(parent => {
+		let elementLabel = parent.querySelector('.output-section-label');
+		let elementValue = parent.querySelector('.output-section-value');
+		if (value < 0) {
+			elementLabel.innerText = 'Monthly Defecit: ';
+			elementValue.classList.remove('green-text');
+			elementValue.classList.add('red-text');
+		} else {
+			elementLabel.innerText = 'Monthly Surplus: ';
+			elementValue.classList.remove('red-text');
+			elementValue.classList.add('green-text');
+		}
+		let formattedValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+		elementValue.innerText = formattedValue;
+	});
+}
+
+function setMonthlyIncome(value) {
+	if (!value || isNaN(value) || value < 0) value = 0;
+	[...document.querySelectorAll('.monthly-income')].forEach(parent => {
+		let elementValue = parent.querySelector('.output-section-value');
+		let formattedValue = value.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
+		elementValue.innerText = formattedValue;
+	});
+}
+
+function calculateAll() {
+	const averageDaysPerMonth = 30.44;
+
+	let fMEBeforeTax = inputValues.future.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let fME = fMEBeforeTax * (1 + taxes.future.salesTaxPercent);
+
+	let fMIBeforeTax = inputValues.future.job.monthlySalary;
+	let fMI = fMIBeforeTax - taxes.future.incomeTaxAmount;
+
+	let fMS = fMI - fME;
+
+	let cMEBeforeTax = inputValues.current.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let cME = cMEBeforeTax * (1 + taxes.current.salesTaxPercent);
+
+	let cMIBeforeTax = inputValues.current.job.monthlySalary;
+	let cMI = cMIBeforeTax - taxes.current.incomeTaxAmount;
+
+	let cMS = cMI - cME;
+
+	let oTEBeforeTax = inputValues.oneTimeExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let oTE = oTEBeforeTax * (1 + taxes.future.salesTaxPercent);
+
+	let totalNeeded = oTE;
+
+	let finances = inputValues.finances.reduce((accumulator, currentValue) => accumulator + currentValue);
+
+	let surplus = finances - totalNeeded;
+
+	let daysToTarget = surplus / cMS * averageDaysPerMonth * -1;
+
+	setTotalNeeded(totalNeeded);
+	setSurplus(surplus);
+	setMoveOutDate(daysToTarget);
+	setMonthlyExpenses(fME);
+	setMonthlySurplus(fMS);
+	setMonthlyIncome(fMI);
 }
 
 function validateCurrencyInput(input) {
@@ -282,8 +390,8 @@ function setJobSectionEventListeners(section, setter) {
 		let hoursInput = section.querySelector('.job-input-section-question-hours input');
 		let monthlySalary = calculateMonthlySalary(mode, wageInput, hoursInput);
 		setter(monthlySalary);
-		setIncomeTaxes();
-		calculateAll();
+		setIncomeTaxes()
+			.then(calculateAll);
 	});
 }
 
@@ -291,38 +399,38 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 	let maritalStatusSelect = section.querySelector('.marital-status-select');
 	maritalStatusSelect.addEventListener('change', e => {
 		maritalStatusSetter(e.target.value);
-		setIncomeTaxes();
-		calculateAll();
+		setIncomeTaxes()
+			.then(calculateAll);
 	});
 
 	let currentSection = section.querySelector('#current-location');
 	let currentStateSelect = currentSection.querySelector('.state-select');
 	currentStateSelect.addEventListener('change', e => {
 		currentStateSetter(e.target.value);
-		setIncomeTaxes();
-		calculateAll();
+		setIncomeTaxes()
+			.then(calculateAll);
 	});
 	let currentZipCodeInput = currentSection.querySelector('.zip-code-input');
 	currentZipCodeInput.addEventListener('change', e => {
 		let validatedValue = validateZipCode(e.target);
 		currentZipCodeSetter(validatedValue);
-		setSalesTaxes();
-		calculateAll();
+		setSalesTaxes()
+			.then(calculateAll);
 	});
 
 	let futureSection = section.querySelector('#future-location');
 	let futureStateSelect = futureSection.querySelector('.state-select');
 	futureStateSelect.addEventListener('change', e => {
 		futureStateSetter(e.target.value);
-		setIncomeTaxes();
-		calculateAll();
+		setIncomeTaxes()
+			.then(calculateAll);
 	});
 	let futureZipCodeInput = futureSection.querySelector('.zip-code-input');
 	futureZipCodeInput.addEventListener('change', e => {
 		let validatedValue = validateZipCode(e.target);
 		futureZipCodeSetter(validatedValue);
-		setSalesTaxes();
-		calculateAll();
+		setSalesTaxes()
+			.then(calculateAll);
 	});
 }
 
@@ -337,6 +445,8 @@ async function setSalesTaxes() {
 
 	taxes.current.salesTaxPercent = await currentSalesTax;
 	taxes.future.salesTaxPercent = await futureSalesTax;
+
+	return taxes;
 }
 
 async function setIncomeTaxes() {
@@ -350,6 +460,8 @@ async function setIncomeTaxes() {
 
 	taxes.current.incomeTaxAmount = await currentIncomeTax;
 	taxes.future.incomeTaxAmount = await futureIncomeTax;
+
+	return taxes;
 }
 
 function initializeCalculator() {
@@ -362,7 +474,7 @@ function initializeCalculator() {
 	setJobSectionMode(fMode, fJobSection);
 }
 
-function initializeGlobals() {
+async function initializeGlobals() {
 	let personalInfoSection = document.getElementById('personal-info');
 	inputValues.maritalStatus = personalInfoSection.querySelector('.marital-status-select').value;
 	let currentSection = personalInfoSection.querySelector('#current-location');
@@ -396,11 +508,13 @@ function initializeGlobals() {
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	inputValues.future.monthlyExpenses = getDynamicTableValues(fMonthlyExpensesSection);
 	
-	setSalesTaxes();
-	setIncomeTaxes();
+	await setSalesTaxes();
+	await setIncomeTaxes();
+
+	return inputValues, taxes;
 }
 
-(function onLoad() {
+function onLoad() {
 	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
 	navBar.init();
 
@@ -413,8 +527,8 @@ function initializeGlobals() {
 	footerBar.init();
 
 	initializeCalculator();
-	initializeGlobals();
-	calculateAll();
+	initializeGlobals()
+		.then(calculateAll);
 
 	let personalInfoSection = document.getElementById('personal-info');
 	setPersonalInfoSectionEventListeners(personalInfoSection, 
@@ -442,4 +556,10 @@ function initializeGlobals() {
 
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	setDynamicTableEventListeners(fMonthlyExpensesSection, value => inputValues.future.monthlyExpenses = value);
-})();
+}
+
+if (document.readyState === 'complete') {
+	onLoad();
+} else {
+	document.addEventListener('DOMContentLoaded', onLoad);
+}
