@@ -367,12 +367,12 @@ select.state-select {
 	color: hsl(40, 100%, 60%);
 }
 
-.red-text {
-	color: hsl(0, 100%, 63%);
-}
-
 .blue-text {
 	color: hsl(196, 77%, 55%);
+}
+
+.red-text {
+	color: hsl(0, 100%, 63%);
 }
 
 .disabled {

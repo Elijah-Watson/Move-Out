@@ -73,7 +73,7 @@ function setMoveOutDate(daysFromNow) {
 		let elementValue = parent.querySelector('.output-section-value');
 		let today = new Date();
 		let moveOutDate = new Date(new Date().setDate(today.getDate() + daysFromNow));
-		elementValue.innerText = moveOutDate.toLocaleDateString('en-US', { dateStyle: 'long', timeStyle: 'short' });
+		elementValue.innerText = moveOutDate.toLocaleDateString('en-US', { dateStyle: 'short' });
 	});
 }
 
@@ -323,6 +323,11 @@ function setDynamicTableEventListeners(section, setter) {
 	section.querySelector('.dynamic-table').addEventListener('change', e => {
 		setter(getDynamicTableValues(section));
 		calculateAll();
+	});
+	section.querySelector('.dynamic-table').addEventListener('keyup', e => {
+		if (e.keyCode === 13) {
+			e.target.blur();
+		}
 	});
 }
 
