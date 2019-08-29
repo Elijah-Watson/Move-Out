@@ -398,6 +398,11 @@ function setJobSectionEventListeners(section, setter) {
 		setIncomeTaxes()
 			.then(calculateAll);
 	});
+	section.addEventListener('keyup', e => {
+		if (e.keyCode === 13) {
+			e.target.blur();
+		}
+	});
 }
 
 function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, currentStateSetter, currentZipCodeSetter, futureStateSetter, futureZipCodeSetter) {
@@ -436,6 +441,12 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 		futureZipCodeSetter(validatedValue);
 		setSalesTaxes()
 			.then(calculateAll);
+	});
+
+	section.addEventListener('keyup', e => {
+		if (e.keyCode === 13) {
+			e.target.blur();
+		}
 	});
 }
 
