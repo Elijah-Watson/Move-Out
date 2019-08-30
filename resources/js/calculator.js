@@ -12,6 +12,9 @@ const inputValues = {
 			zipCode: null
 		},
 		job: {
+			mode: null,
+			wage: null,
+			hours: null,
 			monthlySalary: null
 		},
 		monthlyExpenses: []
@@ -22,6 +25,9 @@ const inputValues = {
 			zipCode: null
 		},
 		job: {
+			mode: null,
+			wage: null,
+			hours: null,
 			monthlySalary: null
 		},
 		monthlyExpenses: []
@@ -117,7 +123,7 @@ function setMonthlyIncome(value) {
 function calculateAll() {
 	const averageDaysPerMonth = 30.44;
 
-	let fMEBeforeTax = inputValues.future.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let fMEBeforeTax = inputValues.future.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
 	let fME = fMEBeforeTax * (1 + taxes.future.salesTaxPercent);
 
 	let fMIBeforeTax = inputValues.future.job.monthlySalary;
@@ -125,7 +131,7 @@ function calculateAll() {
 
 	let fMS = fMI - fME;
 
-	let cMEBeforeTax = inputValues.current.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let cMEBeforeTax = inputValues.current.monthlyExpenses.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
 	let cME = cMEBeforeTax * (1 + taxes.current.salesTaxPercent);
 
 	let cMIBeforeTax = inputValues.current.job.monthlySalary;
@@ -133,12 +139,12 @@ function calculateAll() {
 
 	let cMS = cMI - cME;
 
-	let oTEBeforeTax = inputValues.oneTimeExpenses.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let oTEBeforeTax = inputValues.oneTimeExpenses.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
 	let oTE = oTEBeforeTax * (1 + taxes.future.salesTaxPercent);
 
 	let totalNeeded = oTE;
 
-	let finances = inputValues.finances.reduce((accumulator, currentValue) => accumulator + currentValue);
+	let finances = inputValues.finances.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
 
 	let surplus = finances - totalNeeded;
 
@@ -150,13 +156,15 @@ function calculateAll() {
 	setMonthlyExpenses(fME);
 	setMonthlySurplus(fMS);
 	setMonthlyIncome(fMI);
+
+	localStorage.setItem('inputValues', JSON.stringify(inputValues));
 }
 
 function validateCurrencyInput(input) {
 	let value = input.value;
 	let result;
 	if (!value) {
-		result = 0;
+		result = null;
 		input.classList.remove('invalid');
 	} else {
 		let regex = /^\$?(?:\d+|\d{1,3}(?:,\d{3})*)(?:.\d{1,2})?$/;
@@ -166,7 +174,7 @@ function validateCurrencyInput(input) {
 			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
 			input.classList.remove('invalid');
 		} else {
-			result = 0;
+			result = null;
 			input.classList.add('invalid');
 		}
 	}
@@ -177,7 +185,7 @@ function validateHoursInput(input) {
 	let value = input.value;
 	let result;
 	if (!value) {
-		result = 0;
+		result = null;
 		input.classList.remove('invalid');
 	} else {
 		let regex = /^(?:1 ?(?:h|H|hour|Hour)?|\d+(?:.\d+)? ?(?:h|H|hours|Hours)?)$/;
@@ -187,7 +195,7 @@ function validateHoursInput(input) {
 			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
 			input.classList.remove('invalid');
 		} else {
-			result = 0;
+			result = null;
 			input.classList.add('invalid');
 		}
 	}
@@ -198,7 +206,7 @@ function validateZipCode(input) {
 	let value = input.value;
 	let result;
 	if (!value) {
-		result = 0;
+		result = null;
 		input.classList.remove('invalid');
 	} else {
 		let regex = /^\d{5}$/;
@@ -208,7 +216,7 @@ function validateZipCode(input) {
 			result = match;
 			input.classList.remove('invalid');
 		} else {
-			result = 0;
+			result = null;
 			input.classList.add('invalid');
 		}
 	}
@@ -256,17 +264,16 @@ async function getIncomeTax(payRate, filingStatus, state) {
 
 function dynamicTableClickHandler(e) {
 	if (e.target.classList.contains('dynamic-table-add')) {
-		addDynamicTableRow(e);
+		addDynamicTableRow(e.currentTarget);
 		return false;
 	}
 	if (e.target.classList.contains('dynamic-table-remove')) {
-		removeDynamicTableRow(e);
+		removeDynamicTableRow(e.currentTarget, e.target.parentNode);
 		return true;
 	}
 }
 
-function addDynamicTableRow(e) {
-	let table = e.currentTarget;
+function addDynamicTableRow(table) {
 	let tableBody = table.querySelector('.dynamic-table-body');
 	let tableRow = document.createElement('div');
 	let labelInput = document.createElement('input');
@@ -289,10 +296,7 @@ function addDynamicTableRow(e) {
 	tableBody.appendChild(tableRow);
 }
 
-function removeDynamicTableRow(e) {
-	let removeButton = e.target;
-	let tableRow = removeButton.parentNode;
-	let table = e.currentTarget;
+function removeDynamicTableRow(table, tableRow) {
 	let tableBody = table.querySelector('.dynamic-table-body');
 	let tableRows = tableBody.querySelectorAll('.dynamic-table-row');
 	if (tableRows.length < 2) {
@@ -308,8 +312,8 @@ function removeDynamicTableRow(e) {
 
 function getDynamicTableValues(section) {
 	let dTRows = [...section.getElementsByClassName('dynamic-table-row')];
-	let dTValueInputs = dTRows.map(dTRow => dTRow.querySelector('.dynamic-table-row-value'));
-	let validatedDTValueInputs = dTValueInputs.map(validateCurrencyInput);
+	let dTValueInputs = dTRows.map(dTRow => [dTRow.querySelector('.dynamic-table-row-label'), dTRow.querySelector('.dynamic-table-row-value')]);
+	let validatedDTValueInputs = dTValueInputs.map(dTValueInput => [dTValueInput[0].value, validateCurrencyInput(dTValueInput[1])]);
 	return validatedDTValueInputs;
 }
 
@@ -359,23 +363,21 @@ function setJobSectionMode(mode, section) {
 	}
 }
 
-function calculateMonthlySalary(mode, wageInput, hoursInput) {
+function calculateMonthlySalary(mode, wage, hours) {
 	const weeksPerMonth = 4.348214;
-	let validatedWage = validateCurrencyInput(wageInput);
-	let validatedHours = validateHoursInput(hoursInput);
 	let result;
 	switch (mode) {
 		case 'hourly':
-			result = validatedWage * validatedHours * weeksPerMonth;
+			result = wage * hours * weeksPerMonth;
 			break;
 		case 'weekly':
-			result = validatedWage * weeksPerMonth;
+			result = wage * weeksPerMonth;
 			break;
 		case 'monthly':
-			result = validatedWage;
+			result = wage;
 			break;
 		case 'yearly':
-			result = validatedWage / 12;
+			result = wage / 12;
 			break;
 		default:
 			result = 0;
@@ -385,16 +387,21 @@ function calculateMonthlySalary(mode, wageInput, hoursInput) {
 	return result;
 }
 
-function setJobSectionEventListeners(section, setter) {
+function setJobSectionEventListeners(section, modeSetter, wageSetter, hoursSetter, monthlySalarySetter) {
 	section.addEventListener('change', e => {
 		let mode = section.querySelector('.income-type-select').value;
+		modeSetter(mode);
 		if (e.target && e.target.classList.contains('income-type-select')) {
 			setJobSectionMode(mode, section);
 		}
 		let wageInput = section.querySelector('.job-input-section-question-wage input');
+		let validatedWage = validateCurrencyInput(wageInput);
+		wageSetter(validatedWage);
 		let hoursInput = section.querySelector('.job-input-section-question-hours input');
-		let monthlySalary = calculateMonthlySalary(mode, wageInput, hoursInput);
-		setter(monthlySalary);
+		let validatedHours = validateHoursInput(hoursInput);
+		hoursSetter(validatedHours);
+		let monthlySalary = calculateMonthlySalary(mode, validatedWage, validatedHours);
+		monthlySalarySetter(monthlySalary);
 		setIncomeTaxes()
 			.then(calculateAll);
 	});
@@ -490,6 +497,58 @@ function initializeCalculator() {
 	setJobSectionMode(fMode, fJobSection);
 }
 
+function initializeLocalStorage() {
+	let tempInputValues = JSON.parse(localStorage.getItem('inputValues'));
+	if (!tempInputValues) return;
+
+	let personalInfoSection = document.getElementById('personal-info');
+	personalInfoSection.querySelector('.marital-status-select').value = tempInputValues.maritalStatus;
+	let currentSection = personalInfoSection.querySelector('#current-location');
+	currentSection.querySelector('.state-select').value = tempInputValues.current.location.state;
+	currentSection.querySelector('.zip-code-input').value = tempInputValues.current.location.zipCode;
+	let futureSection = personalInfoSection.querySelector('#future-location');
+	futureSection.querySelector('.state-select').value = tempInputValues.future.location.state;
+	futureSection.querySelector('.zip-code-input').value = tempInputValues.future.location.zipCode;
+
+	let financeSection = document.getElementById('finances');
+	let financeSectionTable = financeSection.querySelector('.dynamic-table');
+	dynamicTableHelper(financeSectionTable, tempInputValues.finances);
+
+	let cJobSection = document.getElementById('current-job');
+	cJobSection.querySelector('.income-type-select').value = tempInputValues.current.job.mode;
+	cJobSection.querySelector('.job-input-section-question-wage input').value = tempInputValues.current.job.wage;
+	cJobSection.querySelector('.job-input-section-question-hours input').value = tempInputValues.current.job.hours;
+
+	let cMonthlyExpensesSection = document.getElementById('current-monthly-expenses');
+	let cMonthlyExpensesSectionTable = cMonthlyExpensesSection.querySelector('.dynamic-table');
+	dynamicTableHelper(cMonthlyExpensesSectionTable, tempInputValues.current.monthlyExpenses);
+
+	let oneTimeExpensesSection = document.getElementById('one-time-expenses');
+	let oneTimeExpensesSectionTable = oneTimeExpensesSection.querySelector('.dynamic-table');
+	dynamicTableHelper(oneTimeExpensesSectionTable, tempInputValues.oneTimeExpenses);
+
+	let fJobSection = document.getElementById('future-job');
+	fJobSection.querySelector('.income-type-select').value = tempInputValues.future.job.mode;
+	fJobSection.querySelector('.job-input-section-question-wage input').value = tempInputValues.future.job.wage;
+	fJobSection.querySelector('.job-input-section-question-hours input').value = tempInputValues.future.job.hours;
+
+	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
+	let fMonthlyExpensesSectionTable = fMonthlyExpensesSection.querySelector('.dynamic-table');
+	dynamicTableHelper(fMonthlyExpensesSectionTable, tempInputValues.future.monthlyExpenses);
+
+	function dynamicTableHelper(table, values) {
+		let tableRows = table.querySelectorAll('.dynamic-table-row');
+		for (let i = 0; i < values.length; i++) {
+			if (!tableRows[i]) {
+				addDynamicTableRow(table);
+				tableRows = table.querySelectorAll('.dynamic-table-row');
+			}
+			tableRows[i].querySelector('.dynamic-table-row-label').value = values[i][0];
+			tableRows[i].querySelector('.dynamic-table-row-value').value = values[i][1];
+		}
+	}
+}
+
 async function initializeGlobals() {
 	let personalInfoSection = document.getElementById('personal-info');
 	inputValues.maritalStatus = personalInfoSection.querySelector('.marital-status-select').value;
@@ -505,9 +564,14 @@ async function initializeGlobals() {
 
 	let cJobSection = document.getElementById('current-job');
 	let cMode = cJobSection.querySelector('.income-type-select').value;
+	inputValues.current.job.mode = cMode;
 	let cWageInput = cJobSection.querySelector('.job-input-section-question-wage input');
+	let cValidatedWage = validateCurrencyInput(cWageInput);
+	inputValues.current.job.wage = cValidatedWage;
 	let cHoursInput = cJobSection.querySelector('.job-input-section-question-hours input');
-	inputValues.current.job.monthlySalary = calculateMonthlySalary(cMode, cWageInput, cHoursInput);
+	let cValidatedHours = validateHoursInput(cHoursInput);
+	inputValues.current.job.hours = cValidatedHours;
+	inputValues.current.job.monthlySalary = calculateMonthlySalary(cMode, cValidatedWage, cValidatedHours);
 	
 	let cMonthlyExpensesSection = document.getElementById('current-monthly-expenses');
 	inputValues.current.monthlyExpenses = getDynamicTableValues(cMonthlyExpensesSection);
@@ -517,9 +581,14 @@ async function initializeGlobals() {
 
 	let fJobSection = document.getElementById('future-job');
 	let fMode = fJobSection.querySelector('.income-type-select').value;
+	inputValues.future.job.mode = fMode;
 	let fWageInput = fJobSection.querySelector('.job-input-section-question-wage input');
+	let fValidatedWage = validateCurrencyInput(fWageInput);
+	inputValues.future.job.wage = fValidatedWage;
 	let fHoursInput = fJobSection.querySelector('.job-input-section-question-hours input');
-	inputValues.future.job.monthlySalary = calculateMonthlySalary(fMode, fWageInput, fHoursInput);
+	let fValidatedHours = validateHoursInput(fHoursInput);
+	inputValues.future.job.hours = fValidatedHours;
+	inputValues.future.job.monthlySalary = calculateMonthlySalary(fMode, fValidatedWage, fValidatedHours);
 
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	inputValues.future.monthlyExpenses = getDynamicTableValues(fMonthlyExpensesSection);
@@ -543,6 +612,7 @@ function onLoad() {
 	footerBar.init();
 
 	initializeCalculator();
+	initializeLocalStorage();
 	initializeGlobals()
 		.then(calculateAll);
 
@@ -559,7 +629,11 @@ function onLoad() {
 	setDynamicTableEventListeners(financeSection, value => inputValues.finances = value);
 
 	let cJobSection = document.getElementById('current-job');
-	setJobSectionEventListeners(cJobSection, value => inputValues.current.job.monthlySalary = value);
+	setJobSectionEventListeners(cJobSection, 
+		value => inputValues.current.job.mode = value,
+		value => inputValues.current.job.wage = value,
+		value => inputValues.current.job.hours = value,
+		value => inputValues.current.job.monthlySalary = value);
 
 	let cMonthlyExpensesSection = document.getElementById('current-monthly-expenses');
 	setDynamicTableEventListeners(cMonthlyExpensesSection, value => inputValues.current.monthlyExpenses = value);
@@ -568,7 +642,11 @@ function onLoad() {
 	setDynamicTableEventListeners(oneTimeExpensesSection, value => inputValues.oneTimeExpenses = value);
 
 	let fJobSection = document.getElementById('future-job');
-	setJobSectionEventListeners(fJobSection, value => inputValues.future.job.monthlySalary = value);
+	setJobSectionEventListeners(fJobSection,
+		value => inputValues.future.job.mode = value,
+		value => inputValues.future.job.wage = value,
+		value => inputValues.future.job.hours = value,
+		value => inputValues.future.job.monthlySalary = value);
 
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	setDynamicTableEventListeners(fMonthlyExpensesSection, value => inputValues.future.monthlyExpenses = value);
