@@ -479,8 +479,7 @@ select.state-select {
 }
 
 .site-nav.sticky {
-	position: fixed !important;
-	width: 100%;
+	position: fixed;
 	top: 0;
 }
 
@@ -655,5 +654,18 @@ select.state-select {
 	.output-section-item {
 		max-width: 15em;
 		width: 100%;
+	}
+}
+
+@media only screen and (max-width: 375px) {
+	.site-nav.sticky {
+		position: relative;
+		top: auto;
+	}
+	.site-nav.sticky + .main-content {
+		padding-top: 0.5rem;
+	}
+	.footer-bar-section {
+		display: none;
 	}
 }
