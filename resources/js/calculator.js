@@ -75,13 +75,20 @@ function setSurplus(value) {
 }
 
 function setMoveOutDate(daysFromNow) {
-	if (!daysFromNow || isNaN(daysFromNow) || daysFromNow < 0 || daysFromNow === Infinity) daysFromNow = 0;
-	[...document.querySelectorAll('.move-out-date')].forEach(parent => {
-		let elementValue = parent.querySelector('.output-section-value');
-		let today = new Date();
-		let moveOutDate = new Date(new Date().setDate(today.getDate() + daysFromNow));
-		elementValue.innerText = moveOutDate.toLocaleDateString('en-US', { dateStyle: 'short' });
-	});
+	if (!daysFromNow || isNaN(daysFromNow)) daysFromNow = 0;
+	if (daysFromNow === Infinity || daysFromNow < 0) {
+		[...document.querySelectorAll('.move-out-date')].forEach(parent => {
+			let elementValue = parent.querySelector('.output-section-value');
+			elementValue.innerText = '∞';
+		});
+	} else {
+		[...document.querySelectorAll('.move-out-date')].forEach(parent => {
+			let elementValue = parent.querySelector('.output-section-value');
+			let today = new Date();
+			let moveOutDate = new Date(new Date().setDate(today.getDate() + daysFromNow));
+			elementValue.innerText = moveOutDate.toLocaleDateString('en-US', { dateStyle: 'short' });
+		});
+	}
 }
 
 function setMonthlyExpenses(value) {
@@ -150,8 +157,7 @@ function calculateAll() {
 	let combinedAssets = finances - debts;
 
 	let surplus = combinedAssets - totalNeeded;
-
-	let daysToTarget = surplus / cMS * averageDaysPerMonth * -1;
+	let daysToTarget = surplus >= 0 ? 0 : surplus / cMS * averageDaysPerMonth * -1;
 
 	setTotalNeeded(totalNeeded);
 	setSurplus(surplus);
