@@ -1,7 +1,7 @@
 import '../css/main.css';
 import { StickyNavBar } from './components/sticky-nav-bar';
 import { SectionalFooterBar } from './components/sectional-footer-bar';
-
+import { PopupBubble } from './components/popup-bubble';
 const inputValues = {
 	maritalStatus: null,
 	finances: [],
@@ -610,6 +610,17 @@ function onLoad() {
 	let outputContainer = document.querySelector('.output-container');
 	let footerBar = new SectionalFooterBar([currentFooterBar, currentInputContainer], [futureFooterBar, futureInputContainer], [null, outputContainer]);
 	footerBar.init();
+
+	let firstPopup = document.querySelector('.popup.first-popup');
+	let siteHeaderHeight = document.querySelector('.site-header').offsetHeight;
+	let navBarHeight = document.querySelector('.site-nav').offsetHeight;
+	let navBarBottom = siteHeaderHeight + navBarHeight;
+	let firstPopupObject = new PopupBubble(firstPopup, { top: navBarBottom, right: 25, bottom: 0, left: 25 });
+	firstPopupObject.init();
+
+	let popups = [...document.querySelectorAll('.popup:not(.first-popup)')];
+	let popupObjects = popups.map(popup => new PopupBubble(popup, { top: navBarHeight, right: 25, bottom: 0, left: 25 }));
+	popupObjects.forEach(popupObject => popupObject.init());
 
 	initializeCalculator();
 	initializeLocalStorage();
