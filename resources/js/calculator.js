@@ -5,6 +5,7 @@ import { PopupBubble } from './components/popup-bubble';
 const inputValues = {
 	maritalStatus: null,
 	finances: [],
+	debts: [],
 	oneTimeExpenses: [],
 	current: {
 		location: {
@@ -74,7 +75,7 @@ function setSurplus(value) {
 }
 
 function setMoveOutDate(daysFromNow) {
-	if (!daysFromNow || isNaN(daysFromNow) || daysFromNow < 0) daysFromNow = 0;
+	if (!daysFromNow || isNaN(daysFromNow) || daysFromNow < 0 || daysFromNow === Infinity) daysFromNow = 0;
 	[...document.querySelectorAll('.move-out-date')].forEach(parent => {
 		let elementValue = parent.querySelector('.output-section-value');
 		let today = new Date();
@@ -145,8 +146,10 @@ function calculateAll() {
 	let totalNeeded = oTE;
 
 	let finances = inputValues.finances.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
+	let debts = inputValues.debts.reduce((accumulator, currentValue) => accumulator + currentValue[1], 0);
+	let combinedAssets = finances - debts;
 
-	let surplus = finances - totalNeeded;
+	let surplus = combinedAssets - totalNeeded;
 
 	let daysToTarget = surplus / cMS * averageDaysPerMonth * -1;
 
@@ -464,10 +467,10 @@ async function setSalesTaxes() {
 
 	let futureSalesTax = getSalesTax(inputValues.future.location.zipCode)
 		.then(data => data)
-		.catch(error => console.error(error));	
+		.catch(error => console.error(error));
 
-	taxes.current.salesTaxPercent = await currentSalesTax;
-	taxes.future.salesTaxPercent = await futureSalesTax;
+	taxes.current.salesTaxPercent = await currentSalesTax || 0;
+	taxes.future.salesTaxPercent = await futureSalesTax || 0;
 
 	return taxes;
 }
@@ -481,8 +484,8 @@ async function setIncomeTaxes() {
 		.then(data => data/12)
 		.catch(error => console.error(error));
 
-	taxes.current.incomeTaxAmount = await currentIncomeTax;
-	taxes.future.incomeTaxAmount = await futureIncomeTax;
+	taxes.current.incomeTaxAmount = await currentIncomeTax || 0;
+	taxes.future.incomeTaxAmount = await futureIncomeTax || 0;
 
 	return taxes;
 }
@@ -513,6 +516,10 @@ function initializeLocalStorage() {
 	let financeSection = document.getElementById('finances');
 	let financeSectionTable = financeSection.querySelector('.dynamic-table');
 	dynamicTableHelper(financeSectionTable, tempInputValues.finances);
+
+	let debtSection = document.getElementById('debts');
+	let debtSectionTable = debtSection.querySelector('.dynamic-table');
+	dynamicTableHelper(debtSectionTable, tempInputValues.debts);
 
 	let cJobSection = document.getElementById('current-job');
 	cJobSection.querySelector('.income-type-select').value = tempInputValues.current.job.mode;
@@ -561,6 +568,8 @@ async function initializeGlobals() {
 
 	let financeSection = document.getElementById('finances');
 	inputValues.finances = getDynamicTableValues(financeSection);
+	let debtSection = document.getElementById('debts');
+	inputValues.debts = getDynamicTableValues(debtSection);
 
 	let cJobSection = document.getElementById('current-job');
 	let cMode = cJobSection.querySelector('.income-type-select').value;
@@ -638,6 +647,9 @@ function onLoad() {
 
 	let financeSection = document.getElementById('finances');
 	setDynamicTableEventListeners(financeSection, value => inputValues.finances = value);
+
+	let debtSection = document.getElementById('debts');
+	setDynamicTableEventListeners(debtSection, value => inputValues.debts = value);
 
 	let cJobSection = document.getElementById('current-job');
 	setJobSectionEventListeners(cJobSection, 
