@@ -32,12 +32,22 @@ module.exports = merge(common, {
 		new HtmlWebpackPlugin({
 			template: './calculator.html',
 			chunks: ['calculator'],
-			filename: './calculator.html'
+			filename: './calculator.html',
+			minify: {
+				removeAttributeQuotes: true,
+				collapseWhitespace: true,
+				removeComments: true
+			}
 		}),
 		new HtmlWebpackPlugin({
 			template: './articles.html',
 			chunks: ['articles'],
-			filename: './articles.html'
+			filename: './articles.html',
+			minify: {
+				removeAttributeQuotes: true,
+				collapseWhitespace: true,
+				removeComments: true
+			}
 		})
 	],
 	module: {
