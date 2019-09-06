@@ -30,12 +30,9 @@ export class PopupBubble {
 		// If offscreen left, push left as possible
 		if (popupText.getBoundingClientRect().left < viewportPadding.left) {
 			popupText.style.left = -1 * popupWidth - popupText.getBoundingClientRect().left + anchorPosition.left + viewportPadding.left + 'px';
-			console.log(popupText.getBoundingClientRect().left);
 			// If offscreen right, shorten width
 			if (document.documentElement.clientWidth - popupText.getBoundingClientRect().right < viewportPadding.right) {
-				console.log(`${popupWidth} + (${document.documentElement.clientWidth} - ${popupText.getBoundingClientRect().right}) - (${viewportPadding.right} + ${viewportPadding.left})`);
 				popupWidth = popupWidth + (document.documentElement.clientWidth - popupText.getBoundingClientRect().right) - viewportPadding.right;
-				console.log(popupWidth);
 				popupText.style.width = popupWidth + 'px';
 				popupHeight = popupText.offsetHeight;
 			}
@@ -59,8 +56,7 @@ export class PopupBubble {
 	}
 	init() {
 		let resizeEventHandler = () => {
-			this.hide();
-			window.removeEventListener('resize', resizeEventHandler);
+			this.positioner(this.popupText, this.popupButton, this.viewportPadding, this.anchorPadding);
 		}
 		this.popupButton.addEventListener('click', e => {
 			if (this.popupText.classList.contains('hidden')) {
