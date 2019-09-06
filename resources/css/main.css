@@ -412,7 +412,6 @@ select.state-select {
 	border: .1em solid hsl(14, 100%, 57%);
 }
 
-.box .popup .popup-button:active,
 .box .popup .popup-button.active {
 	color: hsl(0, 0%, 100%);
 	background-color: hsl(14, 100%, 57%);
