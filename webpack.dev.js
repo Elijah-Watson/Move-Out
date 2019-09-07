@@ -31,9 +31,9 @@ module.exports = merge(common, {
 			filename: './calculator.html'
 		}),
 		new HtmlWebpackPlugin({
-			template: './articles.html',
-			chunks: ['articles'],
-			filename: './articles.html'
+			template: './guides.html',
+			chunks: ['guides'],
+			filename: './guides.html'
 		})
 	],
 	module: {

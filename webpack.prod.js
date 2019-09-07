@@ -40,9 +40,9 @@ module.exports = merge(common, {
 			}
 		}),
 		new HtmlWebpackPlugin({
-			template: './articles.html',
-			chunks: ['articles'],
-			filename: './articles.html',
+			template: './guides.html',
+			chunks: ['guides'],
+			filename: './guides.html',
 			minify: {
 				removeAttributeQuotes: true,
 				collapseWhitespace: true,
