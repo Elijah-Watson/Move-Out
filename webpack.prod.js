@@ -56,7 +56,16 @@ module.exports = merge(common, {
 				test: /\.css$/,
 				use: [
 					MiniCssExtractPlugin.loader,
-					'css-loader'
+					'css-loader',
+					{
+						loader: 'postcss-loader',
+						options: {
+							ident: 'postcss',
+							plugins: [
+								require('autoprefixer')({ grid: "autoplace" }),
+							]
+						}
+					}
 				]
 			},
 			{ 
