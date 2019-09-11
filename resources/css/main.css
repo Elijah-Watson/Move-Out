@@ -587,6 +587,13 @@ select.state-select {
 	overflow: hidden;
 }
 
+/* Sorry for the extra wrapper.  Necessary due to IE. */
+.header-image-wrapper-wrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
 .header-image-wrapper {
 	position: relative;
 	overflow: hidden;
@@ -666,12 +673,12 @@ select.state-select {
 }
 
 .dynamic-table .dynamic-table-row .dynamic-table-row-label {
-	flex: 1 1 0;
+	flex: 1 1 0px;
 	max-width: none;
 }
 
 .dynamic-table .dynamic-table-row .dynamic-table-row-value {
-	flex: 1 1 0;
+	flex: 1 1 0px;
 }
 
 .circle-button.dynamic-table-add::after {
@@ -704,7 +711,7 @@ select.state-select {
 	text-align: center;
 
 	display: flex;
-	flex: 1 1 0;
+	flex: 1 1 0px;
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
