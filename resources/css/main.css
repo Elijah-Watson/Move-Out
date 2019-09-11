@@ -776,7 +776,7 @@ select.state-select {
 	.site-nav.sticky + .content {
 		padding-top: 0;
 	}
-	.footer-bar-section {
+	.footer-bar {
 		display: none;
 	}
 }
