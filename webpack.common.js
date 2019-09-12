@@ -13,14 +13,19 @@ module.exports = {
 				use: ['html-loader']
 			},
 			{
-				test: /\.(svg|png|jpg|gif)$/,
-				use: {
-					loader: 'file-loader',
-					options: {
-						outputPath: 'images',
-						name: '[name].[hash].[ext]',
+				test: /\.(svg|png|jpg|gif)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							outputPath: 'images',
+							name: '[name].[hash].[ext]',
+						},
+					},
+					{
+						loader: 'image-webpack-loader'
 					}
-				}
+				]
 			}
 		]
 	}
