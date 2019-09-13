@@ -660,7 +660,7 @@ select.state-select {
 .icon-box {
 	position: relative;
 	display: flex;
-	align-items: start;
+	align-items: flex-start;
 	max-width: 70em;
 	min-width: 75%;
 }
