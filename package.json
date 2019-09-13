@@ -6,7 +6,7 @@
 	"scripts": {
 		"lambda-serve": "netlify-lambda serve functions-source",
 		"lambda-build": "netlify-lambda build functions-source",
-		"start": "concurrently \"webpack-dev-server --config webpack.dev.js --open\" \"npm run lambda-serve\"",
+		"start": "concurrently \"webpack-dev-server --config webpack.dev.js\" \"npm run lambda-serve\"",
 		"build": "webpack --config webpack.prod.js && npm run lambda-build"
 	},
 	"keywords": [],

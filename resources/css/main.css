@@ -53,6 +53,7 @@ h4,
 h5,
 h6 {
 	margin: 0.25rem 0rem;
+	font-weight: bold;
 }
 
 h1 {
@@ -86,7 +87,7 @@ h6 {
 }
 
 p {
-	margin: 0.25em 0.5em;
+	margin: 0.5em 0;
 }
 
 dl {
@@ -163,7 +164,7 @@ input[type="reset"] {
 	color: hsl(0, 0%, 100%);
 	border: 0;
 	outline: none;
-	margin: 0.25em 0.5em;
+	margin: 0.25em 0;
 	cursor: pointer;
 	padding: 0.5em 1em;
 	border-radius: 0.2em;
@@ -380,6 +381,11 @@ select.state-select {
 	display: none !important;
 }
 
+.box-container {
+	display: flex;
+	flex-direction: column;
+}
+
 .box {
 	position: relative;
 	display: block;
@@ -445,6 +451,7 @@ select.state-select {
 }
 
 .depressable-button {
+	display: inline-block;
 	font-size: 1.4rem;
 	font-weight: bold;
 	background-color: hsl(20, 100%, 66%);
@@ -454,18 +461,21 @@ select.state-select {
 	border-radius: 0.2em;
 	box-shadow: 0 0.3em 0 0 hsl(9, 100%, 38%);
 	padding: 0.5em 1em;
-	margin: 0.25em 0.5em;
+	margin: 0.25em 0;
 	cursor: pointer;
+	text-decoration: none;
 }
 
 .depressable-button:hover {
 	background-color: hsl(14, 100%, 57%);
+	text-decoration: none;
 }
 
 .depressable-button:active {
 	background-color: hsl(14, 100%, 57%);
 	transform: translateY(0.1em);
 	box-shadow: 0 0.2em 0 0 hsl(9, 100%, 38%);
+	text-decoration: none;
 }
 
 .depressable-button:disabled {
@@ -474,6 +484,12 @@ select.state-select {
 	transform: translateY(0.1em);
 	box-shadow: 0 0.2em 0 0 hsl(9, 100%, 38%);
 	cursor: not-allowed;
+	text-decoration: none;
+}
+
+.depressable-button:visited {
+	color: hsl(0, 0%, 100%);
+	text-decoration: none;
 }
 
 .circle-button {
@@ -621,24 +637,80 @@ select.state-select {
 	background-color: hsla(0, 0%, 0%, 0.3);
 	box-shadow: 0 0 0 999em hsla(0, 0%, 0%, 0.3);
 	text-shadow: 0 0 0.1em hsla(0, 0%, 0%);
-
-	opacity: 0;
-	animation: 1.5s ease-in 0.5s forwards fade-in;
+	
+	/* opacity: 0;
+	animation: 0.75s ease-in 0.25s forwards fade-in; */
 }
 
 .header-title {
 	font-size: 1em;
 
-	opacity: 0;
-	animation: 1s ease-in 2.5s forwards fade-in;
+	/* opacity: 0;
+	animation: 1s ease-in 1s forwards fade-in; */
 }
 
 .header-description {
 	font-size: 0.45em;
 	margin: 0;
 
-	opacity: 0;
-	animation: 1s ease-in 3.5s forwards fade-in;
+	/* opacity: 0;
+	animation: 1s ease-in 2s forwards fade-in; */
+}
+
+.icon-box {
+	position: relative;
+	display: flex;
+	align-items: start;
+	max-width: 70em;
+	min-width: 75%;
+}
+
+.icon-box--left {
+	padding-left: 0;
+	margin-right: auto;
+}
+
+.icon-box--right {
+	padding-right: 0;
+	margin-left: auto;
+}
+
+.icon-box--right .icon {
+	order: 1;
+}
+
+.icon-box--left .icon-box-content {
+	padding-right: 1em;
+}
+
+.icon-box--right .icon-box-content {
+	padding-left: 1em;
+	text-align: right;
+}
+
+.icon-box .icon {
+	flex: 0 1 10em;
+	margin: 2em;
+}
+
+.icon-box .icon use {
+	fill: hsl(14, 100%, 57%);
+}
+
+.icon-box-content {
+	flex: 1 1 100%;
+	font-size: 1.15em;
+}
+
+.icon-box-content .icon-box-title {
+	font-size: 2em;
+	font-weight: bold;
+	color: hsl(199, 100%, 38%);
+}
+
+.icon-box-content p {
+	text-align: justify;
+	text-justify: inter-word;
 }
 
 .input-container,
@@ -760,6 +832,10 @@ select.state-select {
 }
 
 @media only screen and (max-width: 435px) {
+	.icon-box .icon {
+		margin: 1em;
+	}
+
 	.input-container .input-question .input-question-text {
 		flex: 0 0 100%;
 	}
@@ -782,6 +858,36 @@ select.state-select {
 	}
 	.site-nav.sticky + .content {
 		padding-top: 0;
+	}
+	.icon-box {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		max-width: none;
+	}
+	.icon-box--left, 
+	.icon-box--right {
+		padding: 1.5rem;
+	}
+	.icon-box--left .icon,
+	.icon-box--right .icon {
+		order: 0;
+	}
+	.icon-box--left .icon-box-content,
+	.icon-box--right .icon-box-content {
+		text-align: center;
+	}
+	.icon-box .icon {
+		flex: 0 1 7.5em;
+		margin: 1em;
+	}
+	.icon-box-content {
+		text-align: center;
+	}
+	.icon-box-content p {
+		padding: 0 1em;
+		text-align: justify;
+		text-justify: inter-word;
 	}
 	.footer-bar {
 		display: none;
