@@ -687,19 +687,6 @@ select.state-select {
 	border-bottom: solid hsl(14, 100%, 57%) 0.2em;
 }
 
-.icon-box--right .icon {
-	order: 1;
-}
-
-.icon-box--left .icon-box-content {
-	padding-right: 1em;
-}
-
-.icon-box--right .icon-box-content {
-	padding-left: 1em;
-	text-align: right;
-}
-
 .icon-box .icon {
 	flex: 0 1 10em;
 	margin: 2em;
@@ -872,18 +859,6 @@ select.state-select {
 		flex-direction: column;
 		align-items: center;
 		max-width: none;
-	}
-	.icon-box--left, 
-	.icon-box--right {
-		padding: 1.5rem;
-	}
-	.icon-box--left .icon,
-	.icon-box--right .icon {
-		order: 0;
-	}
-	.icon-box--left .icon-box-content,
-	.icon-box--right .icon-box-content {
-		text-align: center;
 	}
 	.icon-box .icon {
 		flex: 0 1 7.5em;
