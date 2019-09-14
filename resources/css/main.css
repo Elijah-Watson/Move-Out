@@ -42,8 +42,6 @@ html {
 
 body {
 	font-size: 1.4rem;
-	background-color: hsl(0, 0%, 88%);
-	color: hsl(199, 100%, 10%);
 }
 
 h1,
@@ -356,6 +354,16 @@ select.state-select {
 	max-width: 5em;
 }
 
+.light-grey-background {
+	background-color: hsl(0, 0%, 88%);
+	color: hsl(199, 100%, 10%);
+}
+
+.white-background {
+	background-color: hsl(0, 0%, 100%);
+	color: hsl(199, 100%, 10%);
+}
+
 .main-content {
 	position: relative;
 	padding: 0.5rem 2rem;
@@ -384,6 +392,12 @@ select.state-select {
 .box-container {
 	display: flex;
 	flex-direction: column;
+	align-items: stretch;
+	margin: auto;
+}
+
+.box-container--center {
+	align-items: center;
 }
 
 .box {
@@ -454,12 +468,12 @@ select.state-select {
 	display: inline-block;
 	font-size: 1.4rem;
 	font-weight: bold;
-	background-color: hsl(20, 100%, 66%);
+	background-color: hsl(199, 92%, 56%);
 	color: hsl(0, 0%, 100%);
 	border: 0;
 	outline: none;
 	border-radius: 0.2em;
-	box-shadow: 0 0.3em 0 0 hsl(9, 100%, 38%);
+	box-shadow: 0 0.25em 0 0 hsl(199, 100%, 38%);
 	padding: 0.5em 1em;
 	margin: 0.25em 0;
 	cursor: pointer;
@@ -467,14 +481,14 @@ select.state-select {
 }
 
 .depressable-button:hover {
-	background-color: hsl(14, 100%, 57%);
+	background-color: hsl(199, 100%, 47%);
 	text-decoration: none;
 }
 
 .depressable-button:active {
-	background-color: hsl(14, 100%, 57%);
-	transform: translateY(0.1em);
-	box-shadow: 0 0.2em 0 0 hsl(9, 100%, 38%);
+	background-color: hsl(199, 100%, 47%);
+	transform: translateY(0.15em);
+	box-shadow: 0 0.15em 0 0 hsl(199, 100%, 38%);
 	text-decoration: none;
 }
 
@@ -644,7 +658,6 @@ select.state-select {
 
 .header-title {
 	font-size: 1em;
-
 	/* opacity: 0;
 	animation: 1s ease-in 1s forwards fade-in; */
 }
@@ -657,22 +670,21 @@ select.state-select {
 	animation: 1s ease-in 2s forwards fade-in; */
 }
 
+.icon-box-container {
+	max-width: 1000px;
+}
+
 .icon-box {
 	position: relative;
 	display: flex;
-	align-items: flex-start;
-	max-width: 70em;
-	min-width: 75%;
+	background-color: transparent;
+	box-shadow: none;
+	border-radius: 0;
+	margin: 0 0.75rem;
 }
 
-.icon-box--left {
-	padding-left: 0;
-	margin-right: auto;
-}
-
-.icon-box--right {
-	padding-right: 0;
-	margin-left: auto;
+.icon-box:not(:last-child) {
+	border-bottom: solid hsl(14, 100%, 57%) 0.2em;
 }
 
 .icon-box--right .icon {
@@ -715,12 +727,8 @@ select.state-select {
 
 .input-container,
 .output-container {
-	display: flex;
-	flex-direction: column;
-	align-items: stretch;
 	font-size: 1.6rem;
 	max-width: 700px;
-	margin: auto;
 }
 
 .input-container .input-questions {
