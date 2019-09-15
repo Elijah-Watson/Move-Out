@@ -41,7 +41,7 @@ module.exports = {
 						loader: 'responsive-loader',
 						options: {
 							outputPath: 'images',
-							sizes: [300, 600, 1200, 2000],
+							sizes: [2000, 1200, 600, 300],
 							placeholder: true,
 							placeholderSize: 50,
 							name: '[name]-[width].[hash].[ext]'
