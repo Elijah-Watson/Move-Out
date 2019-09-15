@@ -396,10 +396,6 @@ select.state-select {
 	margin: auto;
 }
 
-.box-container--center {
-	align-items: center;
-}
-
 .box {
 	position: relative;
 	display: block;
@@ -692,7 +688,8 @@ select.state-select {
 	margin: 2em;
 }
 
-.icon-box .icon use {
+.icon-box .icon use,
+.icon-box .icon path {
 	fill: hsl(14, 100%, 57%);
 }
 
