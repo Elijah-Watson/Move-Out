@@ -683,9 +683,13 @@ select.state-select {
 	border-bottom: solid hsl(14, 100%, 57%) 0.2em;
 }
 
-.icon-box .icon {
+.icon-box-image {
 	flex: 0 1 10em;
 	margin: 2em;
+}
+
+.icon-box-image .icon {
+	margin: 0;
 }
 
 .icon-box .icon use,
@@ -824,7 +828,7 @@ select.state-select {
 }
 
 @media only screen and (max-width: 435px) {
-	.icon-box .icon {
+	.icon-box-image {
 		margin: 1em;
 	}
 
@@ -857,7 +861,7 @@ select.state-select {
 		align-items: center;
 		max-width: none;
 	}
-	.icon-box .icon {
+	.icon-box-image {
 		flex: 0 1 7.5em;
 		margin: 1em;
 	}
