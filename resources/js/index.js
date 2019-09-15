@@ -1,6 +1,6 @@
 import '../css/main.css';
 import { StickyNavBar } from './components/sticky-nav-bar';
-import 'svg-injector';
+import SVGInjector from 'svg-injector';
 
 function injectSVGs() {
 	var mySVGsToInject = document.querySelectorAll('img.iconic-sprite');
