@@ -8,6 +8,7 @@ function injectSVGs() {
 }
 
 (function onLoad() {
+	injectSVGs();
 	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
 	navBar.init();
 })();
