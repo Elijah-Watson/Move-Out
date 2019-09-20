@@ -3,7 +3,7 @@ export class SectionalFooterBar {
 		this.sections = [...args];
 	}
 
-	animate() {
+	onScroll() {
 		let windowHeight = window.innerHeight;
 		let sections = this.sections;
 		let highestPosition = -Infinity;
@@ -30,6 +30,6 @@ export class SectionalFooterBar {
 	}
 
 	init() {
-		window.addEventListener('scroll', () => this.animate());
+		window.addEventListener('scroll', () => this.onScroll());
 	}
 }
