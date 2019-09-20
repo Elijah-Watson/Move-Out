@@ -314,15 +314,6 @@ blockquote {
 	margin: 0.25em 0.5em;
 }
 
-img,
-audio,
-video,
-canvas,
-svg,
-iframe {
-	margin: 0.25em 0.5em;
-}
-
 iframe {
 	border-radius: 0.2em;
 	border-color: hsl(199, 100%, 38%);
@@ -615,9 +606,9 @@ select.state-select {
 
 /* Sorry for the extra wrapper.  Necessary due to IE. */
 .header-image-wrapper-wrapper {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
+	display: flex;
+	flex-direction: column;
+	height: 100%;
 }
 
 .header-image-wrapper {
@@ -647,7 +638,7 @@ select.state-select {
 	background-color: hsla(0, 0%, 0%, 0.3);
 	box-shadow: 0 0 0 999em hsla(0, 0%, 0%, 0.3);
 	text-shadow: 0 0 0.1em hsla(0, 0%, 0%);
-	
+
 	/* opacity: 0;
 	animation: 0.75s ease-in 0.25s forwards fade-in; */
 }
@@ -666,51 +657,104 @@ select.state-select {
 	animation: 1s ease-in 2s forwards fade-in; */
 }
 
-.icon-box-container {
+.image-box {
+	position: relative;
+	display: flex;
+}
+
+.image-box-image-container {
+	flex: 0 1 10em;
+	margin: 2em;
+}
+
+.image-box-content {
+	flex: 1 1 100%;
+	font-size: 1.15em;
+}
+
+.image-box-content .image-box-title {
+	font-size: 2em;
+	font-weight: bold;
+	color: hsl(199, 100%, 38%);
+}
+
+.image-box-content .image-box-description {
+	text-align: justify;
+	text-justify: inter-word;
+}
+
+.home-box-container {
 	max-width: 1000px;
 }
 
-.icon-box {
-	position: relative;
-	display: flex;
+.home-box {
 	background-color: transparent;
 	box-shadow: none;
 	border-radius: 0;
 	margin: 0 0.75rem;
 }
 
-.icon-box:not(:last-child) {
+.home-box:not(:last-child) {
 	border-bottom: solid hsl(14, 100%, 57%) 0.2em;
 }
 
-.icon-box-image {
-	flex: 0 1 10em;
-	margin: 2em;
-}
-
-.icon-box-image .icon {
-	margin: 0;
-}
-
-.icon-box .icon use,
-.icon-box .icon path {
+.home-box .icon use,
+.home-box .icon path {
 	fill: hsl(14, 100%, 57%);
 }
 
-.icon-box-content {
-	flex: 1 1 100%;
-	font-size: 1.15em;
+.guide-box-container {
+	max-width: 1000px;
 }
 
-.icon-box-content .icon-box-title {
-	font-size: 2em;
+.guide-box {
+	display: flex;
+	flex-direction: column;
+
+	cursor: pointer;
+}
+
+.guide-box-header {
+	display: flex;
+	flex-direction: column;
+}
+
+.guide-box-title {
+	font-size: 1.75em;
 	font-weight: bold;
 	color: hsl(199, 100%, 38%);
 }
 
-.icon-box-content p {
-	text-align: justify;
-	text-justify: inter-word;
+.guide-box-info {
+	color: hsl(0, 0%, 20%);
+	margin: 0 0.5em;
+}
+
+.guide-box-info > span:not(:last-child)::after {
+	content: "|";
+	margin: 0 0.2em;
+}
+
+.guide-box-content {
+	display: flex;
+
+	margin-top: 0.5em;
+}
+
+.guide-box-image-container {
+	position: relative;
+	flex: 0 1 40%;
+	height: 15em;
+	min-width: 15em;
+	margin: 0 1em 0 0;
+
+	overflow: hidden;
+	border-radius: 0.2em;
+}
+
+.guide-box-description {
+	flex: 1 2 0;
+	margin: 0;
 }
 
 .input-container,
@@ -828,12 +872,37 @@ select.state-select {
 }
 
 @media only screen and (max-width: 435px) {
-	.icon-box-image {
+	.image-box-image-container {
 		margin: 1em;
 	}
 
 	.input-container .input-question .input-question-text {
 		flex: 0 0 100%;
+	}
+
+	.guide-box {
+		flex-direction: row-reverse;
+		align-items: center;
+	}
+
+	.guide-box-header {
+		flex: 1 1 60%;
+	}
+
+	.guide-box-description {
+		display: none;
+	}
+
+	.guide-box-content {
+		flex: 1 1 40%;
+		margin-right: 1em;
+	}
+
+	.guide-box-image-container {
+		flex: 0 0 100%;
+		min-width: 0;
+		height: 10em;
+		margin: 0;
 	}
 
 	.output-section-group-body {
@@ -852,37 +921,47 @@ select.state-select {
 		position: relative;
 		top: auto;
 	}
+
 	.site-nav.sticky + .content {
 		padding-top: 0;
 	}
-	.icon-box {
+
+	.image-box {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		max-width: none;
 	}
-	.icon-box-image {
+
+	.image-box-image-container {
 		flex: 0 1 7.5em;
 		margin: 1em;
 	}
-	.icon-box-content {
+
+	.image-box-content {
 		text-align: center;
 	}
-	.icon-box-content p {
+
+	.image-box-content .image-box-description {
 		padding: 0 1em;
 		text-align: justify;
 		text-justify: inter-word;
 	}
+
+	.guide-box {
+		flex-direction: column;
+	}
+
+	.guide-box-header {
+		flex: 1 1 100%;
+	}
+
+	.guide-box-content {
+		width: 100%;
+		margin-right: 0;
+	}
+
 	.footer-bar {
 		display: none;
-	}
-}
-
-@keyframes fade-in {
-	from {
-		opacity: 0;
-	}
-	to {
-		opacity: 1;
 	}
 }
