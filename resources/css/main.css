@@ -664,6 +664,7 @@ select.state-select {
 
 .image-box-image-container {
 	flex: 0 1 10em;
+	width: 10em;
 	margin: 2em;
 }
 
@@ -935,7 +936,8 @@ select.state-select {
 
 	.image-box-image-container {
 		flex: 0 1 7.5em;
-		margin: 1em;
+		width: 7.5em;
+		margin: 0.5em;
 	}
 
 	.image-box-content {
