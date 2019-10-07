@@ -8,6 +8,7 @@ const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { htmlPages } = require('./webpack.globals');
 
 module.exports = merge(common, {
 	mode: 'production',
@@ -19,47 +20,28 @@ module.exports = merge(common, {
 		minimizer: [new OptimizeCssAssetsPlugin(), new TerserPlugin()]
 	},
 	plugins: [
-		new ImageminPlugin({ 
+		new ImageminPlugin({
 			test: /\.(jpe?g|png|gif|svg)$/i,
 			plugins: [
-				imageminMozjpeg({ 
+				imageminMozjpeg({
 					quality: 50
 				})
 			]
 		}),
-		new MiniCssExtractPlugin({filename: 'main.[contentHash].css'}), 
-		new CleanWebpackPlugin(),
-		new HtmlWebpackPlugin({
-			template: './index.html',
-			chunks: ['home'],
-			filename: './index.html',
+		new MiniCssExtractPlugin({ filename: 'main.[contentHash].css' }),
+		new CleanWebpackPlugin()
+	].concat(Object.keys(htmlPages).map(function (id) {
+		return new HtmlWebpackPlugin({
+			template: htmlPages[id],
+			chunks: [id],
+			filename: htmlPages[id],
 			minify: {
 				removeAttributeQuotes: true,
 				collapseWhitespace: true,
 				removeComments: true
 			}
-		}),
-		new HtmlWebpackPlugin({
-			template: './calculator.html',
-			chunks: ['calculator'],
-			filename: './calculator.html',
-			minify: {
-				removeAttributeQuotes: true,
-				collapseWhitespace: true,
-				removeComments: true
-			}
-		}),
-		new HtmlWebpackPlugin({
-			template: './guides.html',
-			chunks: ['guides'],
-			filename: './guides.html',
-			minify: {
-				removeAttributeQuotes: true,
-				collapseWhitespace: true,
-				removeComments: true
-			}
-		})
-	],
+		});
+	})),
 	module: {
 		rules: [
 			{

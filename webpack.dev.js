@@ -2,6 +2,7 @@ const path = require('path');
 const common = require('./webpack.common');
 const merge = require('webpack-merge');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const { htmlPages } = require('./webpack.globals');
 
 module.exports = merge(common, {
 	mode: 'development',
@@ -19,23 +20,13 @@ module.exports = merge(common, {
 		path: path.resolve(__dirname, 'build'),
 		publicPath: 'http://localhost:8080/',
 	},
-	plugins: [
-		new HtmlWebpackPlugin({
-			template: './index.html',
-			chunks: ['home'],
-			filename: './index.html'
-		}),
-		new HtmlWebpackPlugin({
-			template: './calculator.html',
-			chunks: ['calculator'],
-			filename: './calculator.html'
-		}),
-		new HtmlWebpackPlugin({
-			template: './guides.html',
-			chunks: ['guides'],
-			filename: './guides.html'
-		})
-	],
+	plugins: Object.keys(htmlPages).map(function (id) {
+		return new HtmlWebpackPlugin({
+			template: htmlPages[id],
+			chunks: [id],
+			filename: htmlPages[id]
+		});
+	}),
 	module: {
 		rules: [
 			{
