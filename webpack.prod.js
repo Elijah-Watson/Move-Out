@@ -32,9 +32,9 @@ module.exports = merge(common, {
 		new CleanWebpackPlugin()
 	].concat(Object.keys(htmlPages).map(function (id) {
 		return new HtmlWebpackPlugin({
-			template: htmlPages[id],
-			chunks: [id],
-			filename: htmlPages[id],
+			template: htmlPages[id].file,
+			chunks: [htmlPages[id].chunk],
+			filename: htmlPages[id].file,
 			minify: {
 				removeAttributeQuotes: true,
 				collapseWhitespace: true,

@@ -22,9 +22,9 @@ module.exports = merge(common, {
 	},
 	plugins: Object.keys(htmlPages).map(function (id) {
 		return new HtmlWebpackPlugin({
-			template: htmlPages[id],
-			chunks: [id],
-			filename: htmlPages[id]
+			template: htmlPages[id].file,
+			chunks: [htmlPages[id].chunk],
+			filename: htmlPages[id].file
 		});
 	}),
 	module: {

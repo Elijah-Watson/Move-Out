@@ -4,7 +4,8 @@ module.exports = {
 	entry: {
 		home: './resources/js/index.js',
 		calculator: './resources/js/calculator.js',
-		guides: './resources/js/guides.js'
+		guides: './resources/js/guides.js',
+		guide: './resources/js/guide.js'
 	},
 	module: {
 		rules: [
