@@ -455,7 +455,6 @@ select.state-select {
 	box-shadow: 0 0.1em 0.3em 0 hsla(0, 0%, 0%, 0.3);
 	font-size: 1.5rem;
 	text-align: justify;
-	text-justify: inter-word;
 	border-radius: 0.2em;
 	padding: 0.5em 1em;
 
@@ -698,7 +697,6 @@ select.state-select {
 
 .image-box-content .image-box-description {
 	text-align: justify;
-	text-justify: inter-word;
 }
 
 .home-box-container {
@@ -788,7 +786,6 @@ select.state-select {
 	font-size: 2rem;
 	line-height: 1.5;
 	text-align: justify;
-	text-justify: inter-word;
 }
 
 .guide-content p:first-child {
@@ -800,10 +797,8 @@ select.state-select {
 	float: left;
 	font-size: 3.5em;
 	margin: 0.1em 0.1em 0 0;
-}
-
-.guide-content p:first-child::first-line {
-	line-height: 100%;
+	/* Change the line height to normalize glyph height across browsers */
+	line-height: 0.7;
 }
 
 .input-container,
@@ -995,7 +990,6 @@ select.state-select {
 	.image-box-content .image-box-description {
 		padding: 0 1em;
 		text-align: justify;
-		text-justify: inter-word;
 	}
 
 	.guide-box {
