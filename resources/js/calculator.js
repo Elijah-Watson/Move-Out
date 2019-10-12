@@ -2,6 +2,8 @@ import '../css/main.css';
 import { StickyNavBar } from './components/sticky-nav-bar';
 import { SectionalFooterBar } from './components/sectional-footer-bar';
 import { PopupBubble } from './components/popup-bubble';
+import { CloseableBox } from './components/closeable-box';
+
 const inputValues = {
 	maritalStatus: null,
 	finances: [],
@@ -482,12 +484,12 @@ async function setSalesTaxes() {
 }
 
 async function setIncomeTaxes() {
-	let currentIncomeTax = getIncomeTax(inputValues.current.job.monthlySalary*12, inputValues.maritalStatus, inputValues.current.location.state)
-		.then(data => data/12)
+	let currentIncomeTax = getIncomeTax(inputValues.current.job.monthlySalary * 12, inputValues.maritalStatus, inputValues.current.location.state)
+		.then(data => data / 12)
 		.catch(error => console.error(error));
-	
-	let futureIncomeTax = getIncomeTax(inputValues.future.job.monthlySalary*12, inputValues.maritalStatus, inputValues.future.location.state)
-		.then(data => data/12)
+
+	let futureIncomeTax = getIncomeTax(inputValues.future.job.monthlySalary * 12, inputValues.maritalStatus, inputValues.future.location.state)
+		.then(data => data / 12)
 		.catch(error => console.error(error));
 
 	taxes.current.incomeTaxAmount = await currentIncomeTax || 0;
@@ -587,7 +589,7 @@ async function initializeGlobals() {
 	let cValidatedHours = validateHoursInput(cHoursInput);
 	inputValues.current.job.hours = cValidatedHours;
 	inputValues.current.job.monthlySalary = calculateMonthlySalary(cMode, cValidatedWage, cValidatedHours);
-	
+
 	let cMonthlyExpensesSection = document.getElementById('current-monthly-expenses');
 	inputValues.current.monthlyExpenses = getDynamicTableValues(cMonthlyExpensesSection);
 
@@ -607,7 +609,7 @@ async function initializeGlobals() {
 
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	inputValues.future.monthlyExpenses = getDynamicTableValues(fMonthlyExpensesSection);
-	
+
 	await setSalesTaxes();
 	await setIncomeTaxes();
 
@@ -637,19 +639,22 @@ function onLoad() {
 	let popupObjects = popups.map(popup => new PopupBubble(popup, { top: navBarHeight, right: 25, bottom: 0, left: 25 }));
 	popupObjects.forEach(popupObject => popupObject.init());
 
+	let closeableBox = new CloseableBox(document.querySelector('.instructions'), document.querySelector('.instructions .close-button'));
+	closeableBox.init();
+
 	initializeCalculator();
 	initializeLocalStorage();
 	initializeGlobals()
 		.then(calculateAll);
 
 	let personalInfoSection = document.getElementById('personal-info');
-	setPersonalInfoSectionEventListeners(personalInfoSection, 
+	setPersonalInfoSectionEventListeners(personalInfoSection,
 		value => inputValues.maritalStatus = value,
 		value => inputValues.current.location.state = value,
 		value => inputValues.current.location.zipCode = value,
 		value => inputValues.future.location.state = value,
 		value => inputValues.future.location.zipCode = value
-		);
+	);
 
 	let financeSection = document.getElementById('finances');
 	setDynamicTableEventListeners(financeSection, value => inputValues.finances = value);
@@ -658,7 +663,7 @@ function onLoad() {
 	setDynamicTableEventListeners(debtSection, value => inputValues.debts = value);
 
 	let cJobSection = document.getElementById('current-job');
-	setJobSectionEventListeners(cJobSection, 
+	setJobSectionEventListeners(cJobSection,
 		value => inputValues.current.job.mode = value,
 		value => inputValues.current.job.wage = value,
 		value => inputValues.current.job.hours = value,
