@@ -25,21 +25,23 @@
 		</ul>
 	</nav>
 	<div class="content">
-		<div class="main-content">
+		<main class="main-content">
 			<div class="input-container box-container" id="current-input-container">
 				<div class="input-section box" id="personal-info">
 					<h2>Personal Info</h2>
 					<div class="input-questions">
 						<div class="input-question">
-							<span class="input-question-text">Are you single or married?</span>
-							<select class="marital-status-select">
+							<label class="input-question-text" for="marital-status-select">Are you single or
+								married?</label>
+							<select class="marital-status-select" id="marital-status-select">
 								<option value="single">Single</option>
 								<option value="married">Married</option>
 							</select>
 						</div>
 						<div class="input-question" id="current-location">
-							<span class="input-question-text">Where do you currently live?</span>
-							<select class="state-select">
+							<label class="input-question-text" for="current-state-select">Where do you currently
+								live?</label>
+							<select class="state-select" id="current-state-select">
 								<option value="AL">AL</option>
 								<option value="AK">AK</option>
 								<option value="AZ">AZ</option>
@@ -92,11 +94,13 @@
 								<option value="WI">WI</option>
 								<option value="WY">WY</option>
 							</select>
-							<input type="text" placeholder="Zip Code" class="zip-code-input">
+							<input type="text" placeholder="Zip Code" class="zip-code-input"
+								aria-label="current zip code">
 						</div>
 						<div class="input-question" id="future-location">
-							<span class="input-question-text">Where do you want to live?</span>
-							<select class="state-select">
+							<label class="input-question-text" for="current-state-select">Where do you want to
+								live?</label>
+							<select class="state-select" id="future-state-select">
 								<option value="AL">AL</option>
 								<option value="AK">AK</option>
 								<option value="AZ">AZ</option>
@@ -149,11 +153,12 @@
 								<option value="WI">WI</option>
 								<option value="WY">WY</option>
 							</select>
-							<input type="text" placeholder="Zip Code" class="zip-code-input">
+							<input type="text" placeholder="Zip Code" class="zip-code-input"
+								aria-label="future zip code">
 						</div>
 					</div>
 					<div class="popup first-popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden"><a href="/guides/location-matters.html">The locations you pick
 								matter.</a> This information is used to calculate your sales and income tax.
 							Therefore, there is no need to include that in any of the calculations below.</span>
@@ -166,14 +171,14 @@
 							<div class="dynamic-table-row">
 								<input type="text" class="dynamic-table-row-label label-input" placeholder="Name">
 								<input type="text" class="dynamic-table-row-value currency-input"
-									placeholder="$00,000.00">
-								<button class="dynamic-table-remove circle-button"></button>
+									placeholder="$00,000.00" aria-label="dollar amount">
+								<button class="dynamic-table-remove circle-button" aria-label="remove row"></button>
 							</div>
 						</div>
-						<button class="dynamic-table-add circle-button"></button>
+						<button class="dynamic-table-add circle-button" aria-label="add row"></button>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Add any savings or cash you have here.</span>
 					</div>
 				</div>
@@ -184,14 +189,14 @@
 							<div class="dynamic-table-row">
 								<input type="text" class="dynamic-table-row-label label-input" placeholder="Name">
 								<input type="text" class="dynamic-table-row-value currency-input"
-									placeholder="$00,000.00">
-								<button class="dynamic-table-remove circle-button"></button>
+									placeholder="$00,000.00" aria-label="dollar amount">
+								<button class="dynamic-table-remove circle-button" aria-label="remove row"></button>
 							</div>
 						</div>
-						<button class="dynamic-table-add circle-button"></button>
+						<button class="dynamic-table-add circle-button" aria-label="add row"></button>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Add any debts you currently have here.</span>
 					</div>
 				</div>
@@ -199,8 +204,9 @@
 					<h2>Current Job</h2>
 					<div class="input-questions">
 						<div class="input-question">
-							<span class="input-question-text">How do you want to enter your income?</span>
-							<select class="income-type-select">
+							<label class="input-question-text" for="current-income-type-select">How do you want to enter
+								your income?</label>
+							<select class="income-type-select" id="current-income-type-select">
 								<option value="hourly">Hourly Wage / Hours</option>
 								<option value="weekly">Weekly Salary</option>
 								<option value="monthly">Monthly Salary</option>
@@ -208,17 +214,18 @@
 							</select>
 						</div>
 						<div class="input-question job-input-section-question-wage">
-							<span class="input-question-text">How much do you make every <span
-									class="job-input-section-mode">hour</span>?</span>
-							<input type="text" placeholder="$00,000.00" class="currency-input">
+							<label class="input-question-text" for="current-job-wage">How much do you make every <span
+									class="job-input-section-mode">hour</span>?</label>
+							<input type="text" placeholder="$00,000.00" class="currency-input" id="current-job-wage">
 						</div>
 						<div class="input-question job-input-section-question-hours">
-							<span class="input-question-text">How many hours do you work in a week?</span>
-							<input type="text" placeholder="0" class="hours-input">
+							<label class="input-question-text" for="current-job-hours">How many hours do you work in a
+								week?</label>
+							<input type="text" placeholder="0" class="hours-input" id="current-job-hours">
 						</div>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Enter your current source of income here. If you earn overtime
 							on a regular basis, using the "Hourly Wage / Hours" option is not recommended.</span>
 					</div>
@@ -230,14 +237,14 @@
 							<div class="dynamic-table-row">
 								<input type="text" class="dynamic-table-row-label label-input" placeholder="Name">
 								<input type="text" class="dynamic-table-row-value currency-input"
-									placeholder="$00,000.00">
-								<button class="dynamic-table-remove circle-button"></button>
+									placeholder="$00,000.00" aria-label="dollar amount">
+								<button class="dynamic-table-remove circle-button" aria-label="remove row"></button>
 							</div>
 						</div>
-						<button class="dynamic-table-add circle-button"></button>
+						<button class="dynamic-table-add circle-button" aria-label="add row"></button>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Enter any monthly expenses you have currently here. For yearly
 							expenses, divide by 12.</span>
 					</div>
@@ -249,14 +256,14 @@
 							<div class="dynamic-table-row">
 								<input type="text" class="dynamic-table-row-label label-input" placeholder="Name">
 								<input type="text" class="dynamic-table-row-value currency-input"
-									placeholder="$00,000.00">
-								<button class="dynamic-table-remove circle-button"></button>
+									placeholder="$00,000.00" aria-label="dollar amount">
+								<button class="dynamic-table-remove circle-button" aria-label="remove row"></button>
 							</div>
 						</div>
-						<button class="dynamic-table-add circle-button"></button>
+						<button class="dynamic-table-add circle-button" aria-label="remove row"></button>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Enter any one time expenses here. This includes any potential
 							<a href="/guides/calculating-move-expenses.html">moving expenses.</a></span>
 					</div>
@@ -267,8 +274,9 @@
 					<h2>Future Job</h2>
 					<div class="input-questions">
 						<div class="input-question">
-							<span class="input-question-text">How do you want to enter your income?</span>
-							<select class="income-type-select">
+							<label class="input-question-text" for="future-income-type-select">How do you want to enter
+								your income?</label>
+							<select class="income-type-select" id="future-income-type-select">
 								<option value="hourly">Hourly Wage / Hours</option>
 								<option value="weekly">Weekly Salary</option>
 								<option value="monthly">Monthly Salary</option>
@@ -276,17 +284,18 @@
 							</select>
 						</div>
 						<div class="input-question job-input-section-question-wage">
-							<span class="input-question-text">How much do you plan to make every <span
-									class="job-input-section-mode">hour</span>?</span>
-							<input type="text" placeholder="$00,000.00" class="currency-input">
+							<label class="input-question-text" for="future-job-wage">How much do you plan to make every
+								<span class="job-input-section-mode">hour</span>?</label>
+							<input type="text" placeholder="$00,000.00" class="currency-input" id="future-job-wage">
 						</div>
 						<div class="input-question job-input-section-question-hours">
-							<span class="input-question-text">How many hours do you plan to work in a week?</span>
-							<input type="text" placeholder="0" class="hours-input">
+							<label class="input-question-text" for="future-job-hours">How many hours do you plan to work
+								in a week?</label>
+							<input type="text" placeholder="0" class="hours-input" id="future-job-hours">
 						</div>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Enter your planned source of income here. If you plan to earn
 							overtime on a regular basis, using the "Hourly Wage / Hours" option is not recommended. If
 							you are not sure what to put, enter your best guess. You can always come back later.</span>
@@ -300,13 +309,13 @@
 								<input type="text" class="dynamic-table-row-label label-input" placeholder="Name">
 								<input type="text" class="dynamic-table-row-value currency-input"
 									placeholder="$00,000.00">
-								<button class="dynamic-table-remove circle-button"></button>
+								<button class="dynamic-table-remove circle-button" aria-label="remove row"></button>
 							</div>
 						</div>
-						<button class="dynamic-table-add circle-button"></button>
+						<button class="dynamic-table-add circle-button" aria-label="add row"></button>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Enter any <a
 								href="/guides/creating-a-monthly-budget.html">monthly expenses you plan on having in the
 								future</a>
@@ -353,14 +362,14 @@
 						</div>
 					</div>
 					<div class="popup">
-						<button class="popup-button circle-button"></button>
+						<button class="popup-button circle-button" aria-label="popup"></button>
 						<span class="popup-text hidden">Here are your results. These results are just a rough
 							approximation that do not cover every possible situation. They are just meant to give you a
 							general idea. Feel free to go back and change various values to see what happens.</span>
 					</div>
 				</div>
 			</div>
-		</div>
+		</main>
 		<div class="output-section footer-bar" id="current-footer-bar">
 			<div class="footer-bar-section output-section-item total-needed">
 				<span class="footer-bar-label output-section-label">Total Needed: </span>
