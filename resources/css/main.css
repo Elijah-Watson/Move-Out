@@ -44,8 +44,8 @@ body {
 	font-size: 1.4rem;
 }
 
-html, body {
-	height: 100%;
+body {
+	min-height: 100vh;
 }
 
 h1,
@@ -838,11 +838,11 @@ select.state-select {
 }
 
 .circle-button.dynamic-table-add::after {
-	content: '+';
+	content: "+";
 }
 
 .circle-button.dynamic-table-remove::after {
-	content: '×';
+	content: "×";
 }
 
 .output-container {
