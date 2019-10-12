@@ -771,6 +771,8 @@ select.state-select {
 .guide-box-description {
 	flex: 1 2 0px;
 	margin: 0;
+	font-size: 1.1em;
+	line-height: 1.5;
 }
 
 .guide-details {
