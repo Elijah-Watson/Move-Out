@@ -7,6 +7,6 @@ export class CloseableBox {
 		this.box.style.display = 'none';
 	}
 	init() {
-		this.box.addEventListener('click', () => this.closeBox());
+		this.closeButton.addEventListener('click', () => this.closeBox());
 	}
 }
