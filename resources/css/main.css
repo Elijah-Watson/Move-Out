@@ -432,6 +432,11 @@ select.state-select {
 	color: hsl(0, 0%, 30%);
 }
 
+.close-button:active {
+	background-color: transparent;
+	color: hsl(0, 0%, 30%);
+}
+
 .box .close-button {
 	position: absolute;
 	top: -0.2em;
