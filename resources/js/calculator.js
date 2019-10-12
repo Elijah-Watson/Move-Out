@@ -1,3 +1,4 @@
+import 'normalize.css';
 import '../css/main.css';
 import { StickyNavBar } from './components/sticky-nav-bar';
 import { SectionalFooterBar } from './components/sectional-footer-bar';
