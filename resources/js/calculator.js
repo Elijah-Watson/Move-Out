@@ -597,15 +597,30 @@ async function initializeGlobals() {
 	footerBar.init();
 
 	let firstPopup = document.querySelector('.popup.first-popup');
-	let siteHeaderHeight = document.querySelector('.site-header').offsetHeight;
-	let navBarHeight = document.querySelector('.site-nav').offsetHeight;
-	let navBarBottom = siteHeaderHeight + navBarHeight;
-	let firstPopupObject = new PopupBubble(firstPopup, { top: navBarBottom, right: 25, bottom: 0, left: 25 });
+	let firstPopupObject = new PopupBubble(firstPopup);
 	firstPopupObject.init();
 
 	let popups = [...document.querySelectorAll('.popup:not(.first-popup)')];
-	let popupObjects = popups.map(popup => new PopupBubble(popup, { top: navBarHeight, right: 25, bottom: 0, left: 25 }));
+	let popupObjects = popups.map(popup => new PopupBubble(popup));
 	popupObjects.forEach(popupObject => popupObject.init());
+
+	// This is used to dynamically set the "viewport padding" so that the popups aren't hidden behind the header or nav bar
+	function setPopupsViewportPadding(firstPopupObject, popupObjects) {
+		let siteHeader = document.querySelector('.site-header');
+		let siteHeaderHeight = siteHeader.offsetHeight;
+		let navBar = document.querySelector('.site-nav');
+		let navBarHeight = navBar.offsetHeight;
+		let navBarBottom = siteHeaderHeight + navBarHeight;
+		let navBarStickyHeight = navBar.classList.contains('sticky') ? navBarHeight : 0;
+		firstPopupObject.setViewportPadding({ top: navBarBottom, right: 25, bottom: 0, left: 25 });
+		popupObjects.forEach(popupObject => popupObject.setViewportPadding({ top: navBarStickyHeight, right: 25, bottom: 0, left: 25 }));
+	}
+
+	setPopupsViewportPadding(firstPopupObject, popupObjects);
+
+	window.addEventListener('resize', () => {
+		setPopupsViewportPadding(firstPopupObject, popupObjects);
+	});
 
 	let closeableBox = new CloseableBox(document.querySelector('.instructions'), document.querySelector('.instructions .close-button'));
 	closeableBox.init();

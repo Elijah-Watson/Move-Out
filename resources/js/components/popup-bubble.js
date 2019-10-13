@@ -9,6 +9,12 @@ export class PopupBubble {
 		this.popupButton = popup.querySelector('.popup-button');
 		this.popupText = popup.querySelector('.popup-text');
 	}
+	setViewportPadding(viewportPadding) {
+		this.viewportPadding = viewportPadding || { top: 0, right: 0, bottom: 0, left: 0 };
+	}
+	setAnchorPadding(anchorPadding) {
+		this.anchorPadding = anchorPadding || { top: 0, right: 0, bottom: 0, left: 0 };
+	}
 	positioner(popupText, anchor, viewportPadding, anchorPadding) {
 		// Clear any width modifications
 		popupText.style.width = '';
