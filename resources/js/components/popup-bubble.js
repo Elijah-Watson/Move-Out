@@ -1,3 +1,6 @@
+// Places a popup bubble as near to its popup button as possible
+// Requires a popup element that contains an element with text and a button
+// Possible to set viewport or anchor padding, assumed unit is px
 export class PopupBubble {
 	constructor(popup, viewportPadding, anchorPadding) {
 		this.popup = popup;
@@ -55,6 +58,7 @@ export class PopupBubble {
 		this.popupButton.classList.add('active');
 	}
 	init() {
+		// Used to prevent duplicate event listeners
 		let resizeEventHandler = () => {
 			this.positioner(this.popupText, this.popupButton, this.viewportPadding, this.anchorPadding);
 		}

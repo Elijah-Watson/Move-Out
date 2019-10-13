@@ -1,10 +1,12 @@
 import 'normalize.css';
 import '../css/main.css';
+import { validateCurrencyInput, validateHoursInput, validateZipCode } from './utils/validation';
 import { StickyNavBar } from './components/sticky-nav-bar';
 import { SectionalFooterBar } from './components/sectional-footer-bar';
 import { PopupBubble } from './components/popup-bubble';
 import { CloseableBox } from './components/closeable-box';
 
+// Object that contains all user input and some calculated values
 const inputValues = {
 	maritalStatus: null,
 	finances: [],
@@ -38,6 +40,7 @@ const inputValues = {
 	}
 }
 
+// Object that stores tax rates to reduce API calls
 const taxes = {
 	current: {
 		salesTaxPercent: null,
@@ -49,6 +52,7 @@ const taxes = {
 	}
 }
 
+// This section is used for setting the output values
 function setTotalNeeded(value) {
 	if (!value || isNaN(value) || value < 0) value = 0;
 	[...document.querySelectorAll('.total-needed')].forEach(parent => {
@@ -131,6 +135,8 @@ function setMonthlyIncome(value) {
 	});
 }
 
+// The main calculations take place here
+// The two global objects are used for the calculations
 function calculateAll() {
 	const averageDaysPerMonth = 30.44;
 
@@ -172,69 +178,8 @@ function calculateAll() {
 	localStorage.setItem('inputValues', JSON.stringify(inputValues));
 }
 
-function validateCurrencyInput(input) {
-	let value = input.value;
-	let result;
-	if (!value) {
-		result = null;
-		input.classList.remove('invalid');
-	} else {
-		let regex = /^\$?(?:\d+|\d{1,3}(?:,\d{3})*)(?:.\d{1,2})?$/;
-		let matches = value.match(regex);
-		if (matches) {
-			let match = matches[0];
-			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
-			input.classList.remove('invalid');
-		} else {
-			result = null;
-			input.classList.add('invalid');
-		}
-	}
-	return result;
-}
-
-function validateHoursInput(input) {
-	let value = input.value;
-	let result;
-	if (!value) {
-		result = null;
-		input.classList.remove('invalid');
-	} else {
-		let regex = /^(?:1 ?(?:h|H|hour|Hour)?|\d+(?:.\d+)? ?(?:h|H|hours|Hours)?)$/;
-		let matches = value.match(regex);
-		if (matches) {
-			let match = matches[0];
-			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
-			input.classList.remove('invalid');
-		} else {
-			result = null;
-			input.classList.add('invalid');
-		}
-	}
-	return result;
-}
-
-function validateZipCode(input) {
-	let value = input.value;
-	let result;
-	if (!value) {
-		result = null;
-		input.classList.remove('invalid');
-	} else {
-		let regex = /^\d{5}$/;
-		let matches = value.match(regex);
-		if (matches) {
-			let match = matches[0];
-			result = match;
-			input.classList.remove('invalid');
-		} else {
-			result = null;
-			input.classList.add('invalid');
-		}
-	}
-	return result;
-}
-
+// This section contains the actual API calls
+// Each function takes the POST data as params and returns the relevant data
 async function getSalesTax(postalCode) {
 	if (!postalCode) return 0;
 	const response = await fetch('/.netlify/functions/sales-tax', {
@@ -272,6 +217,25 @@ async function getIncomeTax(payRate, filingStatus, state) {
 		incomeTaxValue += json.annual.state.amount;
 	}
 	return incomeTaxValue;
+}
+
+// This section contains the functions for interacting with the dynamic tables
+function setDynamicTableEventListeners(section, setter) {
+	section.querySelector('.dynamic-table').addEventListener('click', e => {
+		if (dynamicTableClickHandler(e)) {
+			setter(getDynamicTableValues(section));
+			calculateAll();
+		}
+	});
+	section.querySelector('.dynamic-table').addEventListener('change', e => {
+		setter(getDynamicTableValues(section));
+		calculateAll();
+	});
+	section.querySelector('.dynamic-table').addEventListener('keyup', e => {
+		if (e.keyCode === 13) {
+			e.target.blur();
+		}
+	});
 }
 
 function dynamicTableClickHandler(e) {
@@ -322,6 +286,7 @@ function removeDynamicTableRow(table, tableRow) {
 	}
 }
 
+// Retrieves all data from a dynamic table, creates an array of name/value arrays, then validates values
 function getDynamicTableValues(section) {
 	let dTRows = [...section.getElementsByClassName('dynamic-table-row')];
 	let dTValueInputs = dTRows.map(dTRow => [dTRow.querySelector('.dynamic-table-row-label'), dTRow.querySelector('.dynamic-table-row-value')]);
@@ -329,24 +294,7 @@ function getDynamicTableValues(section) {
 	return validatedDTValueInputs;
 }
 
-function setDynamicTableEventListeners(section, setter) {
-	section.querySelector('.dynamic-table').addEventListener('click', e => {
-		if (dynamicTableClickHandler(e)) {
-			setter(getDynamicTableValues(section));
-			calculateAll();
-		}
-	});
-	section.querySelector('.dynamic-table').addEventListener('change', e => {
-		setter(getDynamicTableValues(section));
-		calculateAll();
-	});
-	section.querySelector('.dynamic-table').addEventListener('keyup', e => {
-		if (e.keyCode === 13) {
-			e.target.blur();
-		}
-	});
-}
-
+// Changes the inputs in the job sections depending on selected mode
 function setJobSectionMode(mode, section) {
 	let hoursQuestion = section.querySelector('.job-input-section-question-hours');
 	let wageQuestion = section.querySelector('.job-input-section-question-wage');
@@ -369,12 +317,14 @@ function setJobSectionMode(mode, section) {
 			wageQuestionModeText.innerText = 'year';
 			break;
 		default:
-			// set proper error message
-			console.log('error');
+			// The mode should always be set, but if something goes wrong, default to yearly salary mode
+			hoursQuestion.classList.add('disabled');
+			wageQuestionModeText.innerText = 'year';
 			break;
 	}
 }
 
+// Convert job salary info to monthly value
 function calculateMonthlySalary(mode, wage, hours) {
 	const weeksPerMonth = 4.348214;
 	let result;
@@ -392,13 +342,15 @@ function calculateMonthlySalary(mode, wage, hours) {
 			result = wage / 12;
 			break;
 		default:
+			// The mode should always be set, but if something goes wrong, set monthly salary to 0 and log error
 			result = 0;
-			console.log('error');
+			console.error('error');
 			break;
 	}
 	return result;
 }
 
+// Watches for changes to inputs in the job sections and updates global variables using setters if values change
 function setJobSectionEventListeners(section, modeSetter, wageSetter, hoursSetter, monthlySalarySetter) {
 	section.addEventListener('change', e => {
 		let mode = section.querySelector('.income-type-select').value;
@@ -424,6 +376,7 @@ function setJobSectionEventListeners(section, modeSetter, wageSetter, hoursSette
 	});
 }
 
+// Watches for changes to inputs in the personal info section and updates global variables using setters if values change
 function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, currentStateSetter, currentZipCodeSetter, futureStateSetter, futureZipCodeSetter) {
 	let maritalStatusSelect = section.querySelector('.marital-status-select');
 	maritalStatusSelect.addEventListener('change', e => {
@@ -469,6 +422,7 @@ function setPersonalInfoSectionEventListeners(section, maritalStatusSetter, curr
 	});
 }
 
+// These fuctions use the API call functions to retrieve tax data, check for errors, and then save the data to the global tax object
 async function setSalesTaxes() {
 	let currentSalesTax = getSalesTax(inputValues.current.location.zipCode)
 		.then(data => data)
@@ -499,6 +453,7 @@ async function setIncomeTaxes() {
 	return taxes;
 }
 
+// Ensures that the job sections load properly
 function initializeCalculator() {
 	let cJobSection = document.getElementById('current-job');
 	let cMode = cJobSection.querySelector('.income-type-select').value;
@@ -509,9 +464,18 @@ function initializeCalculator() {
 	setJobSectionMode(fMode, fJobSection);
 }
 
+// Checks to see if local storage of previous input values exists
+// If it does not (or it does not match the expected structure), it exits
+// If it does, it fills in those values on the page
 function initializeLocalStorage() {
 	let tempInputValues = JSON.parse(localStorage.getItem('inputValues'));
 	if (!tempInputValues) return;
+	let tempKeys = Object.keys(tempInputValues).sort();
+	let globalKeys = Object.keys(inputValues).sort();
+	if (!tempInputValues || JSON.stringify(tempKeys) !== JSON.stringify(globalKeys)) {
+		localStorage.removeItem('inputValues');
+		return;
+	}
 
 	let personalInfoSection = document.getElementById('personal-info');
 	personalInfoSection.querySelector('.marital-status-select').value = tempInputValues.maritalStatus;
@@ -552,6 +516,7 @@ function initializeLocalStorage() {
 	let fMonthlyExpensesSectionTable = fMonthlyExpensesSection.querySelector('.dynamic-table');
 	dynamicTableHelper(fMonthlyExpensesSectionTable, tempInputValues.future.monthlyExpenses);
 
+	// Adds entries to a dynamic table by creating rows and then setting the values
 	function dynamicTableHelper(table, values) {
 		let tableRows = table.querySelectorAll('.dynamic-table-row');
 		for (let i = 0; i < values.length; i++) {
@@ -565,6 +530,7 @@ function initializeLocalStorage() {
 	}
 }
 
+// Adds initial data to the global variables
 async function initializeGlobals() {
 	let personalInfoSection = document.getElementById('personal-info');
 	inputValues.maritalStatus = personalInfoSection.querySelector('.marital-status-select').value;
@@ -617,7 +583,8 @@ async function initializeGlobals() {
 	return inputValues, taxes;
 }
 
-function onLoad() {
+// Initialize components, initialize calculator, set up event listeners
+(function onLoad() {
 	let navBar = new StickyNavBar(document.querySelector('.site-nav'));
 	navBar.init();
 
@@ -685,10 +652,4 @@ function onLoad() {
 
 	let fMonthlyExpensesSection = document.getElementById('future-monthly-expenses');
 	setDynamicTableEventListeners(fMonthlyExpensesSection, value => inputValues.future.monthlyExpenses = value);
-}
-
-if (document.readyState === 'complete') {
-	onLoad();
-} else {
-	document.addEventListener('DOMContentLoaded', onLoad);
-}
+})();
