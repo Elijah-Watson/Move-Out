@@ -1048,3 +1048,18 @@ select.state-select {
 		display: none;
 	}
 }
+
+@media only screen and (max-height: 500px) {
+	.site-nav.sticky {
+		position: relative;
+		top: auto;
+	}
+
+	.site-nav.sticky + .content {
+		padding-top: 0;
+	}
+
+	.footer-bar {
+		display: none;
+	}
+}
