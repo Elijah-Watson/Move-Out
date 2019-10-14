@@ -12,7 +12,7 @@ export function validateCurrencyInput(input) {
 		let matches = value.match(regex);
 		if (matches) {
 			let match = matches[0];
-			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
+			result = parseFloat(match.replace(/[^0-9.]/g, ''));
 			input.classList.remove('invalid');
 		} else {
 			result = null;
@@ -33,7 +33,7 @@ export function validateHoursInput(input) {
 		let matches = value.match(regex);
 		if (matches) {
 			let match = matches[0];
-			result = parseFloat(match.replace(/[^0-9\.]/g, ''));
+			result = parseFloat(match.replace(/[^0-9.]/g, ''));
 			input.classList.remove('invalid');
 		} else {
 			result = null;

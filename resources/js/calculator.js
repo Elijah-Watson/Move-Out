@@ -38,7 +38,7 @@ const inputValues = {
 		},
 		monthlyExpenses: []
 	}
-}
+};
 
 // Object that stores tax rates to reduce API calls
 const taxes = {
@@ -50,7 +50,7 @@ const taxes = {
 		salesTaxPercent: null,
 		incomeTaxAmount: null
 	}
-}
+};
 
 // This section is used for setting the output values
 function setTotalNeeded(value) {
@@ -189,8 +189,8 @@ async function getSalesTax(postalCode) {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			"country": "USA",
-			"postalCode": postalCode
+			'country': 'USA',
+			'postalCode': postalCode
 		}),
 	});
 	const json = await response.json();
@@ -206,9 +206,9 @@ async function getIncomeTax(payRate, filingStatus, state) {
 			'Content-Type': 'application/json'
 		},
 		body: JSON.stringify({
-			"pay_rate": payRate,
-			"filing_status": filingStatus,
-			"state": state
+			'pay_rate': payRate,
+			'filing_status': filingStatus,
+			'state': state
 		}),
 	});
 	const json = await response.json();
@@ -227,7 +227,7 @@ function setDynamicTableEventListeners(section, setter) {
 			calculateAll();
 		}
 	});
-	section.querySelector('.dynamic-table').addEventListener('change', e => {
+	section.querySelector('.dynamic-table').addEventListener('change', () => {
 		setter(getDynamicTableValues(section));
 		calculateAll();
 	});
@@ -300,27 +300,27 @@ function setJobSectionMode(mode, section) {
 	let wageQuestion = section.querySelector('.job-input-section-question-wage');
 	let wageQuestionModeText = wageQuestion.querySelector('.job-input-section-mode');
 	switch (mode) {
-		case 'hourly':
-			hoursQuestion.classList.remove('disabled');
-			wageQuestionModeText.innerText = 'hour';
-			break;
-		case 'weekly':
-			hoursQuestion.classList.add('disabled');
-			wageQuestionModeText.innerText = 'week';
-			break;
-		case 'monthly':
-			hoursQuestion.classList.add('disabled');
-			wageQuestionModeText.innerText = 'month';
-			break;
-		case 'yearly':
-			hoursQuestion.classList.add('disabled');
-			wageQuestionModeText.innerText = 'year';
-			break;
-		default:
-			// The mode should always be set, but if something goes wrong, default to yearly salary mode
-			hoursQuestion.classList.add('disabled');
-			wageQuestionModeText.innerText = 'year';
-			break;
+	case 'hourly':
+		hoursQuestion.classList.remove('disabled');
+		wageQuestionModeText.innerText = 'hour';
+		break;
+	case 'weekly':
+		hoursQuestion.classList.add('disabled');
+		wageQuestionModeText.innerText = 'week';
+		break;
+	case 'monthly':
+		hoursQuestion.classList.add('disabled');
+		wageQuestionModeText.innerText = 'month';
+		break;
+	case 'yearly':
+		hoursQuestion.classList.add('disabled');
+		wageQuestionModeText.innerText = 'year';
+		break;
+	default:
+		// The mode should always be set, but if something goes wrong, default to yearly salary mode
+		hoursQuestion.classList.add('disabled');
+		wageQuestionModeText.innerText = 'year';
+		break;
 	}
 }
 
@@ -329,23 +329,23 @@ function calculateMonthlySalary(mode, wage, hours) {
 	const weeksPerMonth = 4.348214;
 	let result;
 	switch (mode) {
-		case 'hourly':
-			result = wage * hours * weeksPerMonth;
-			break;
-		case 'weekly':
-			result = wage * weeksPerMonth;
-			break;
-		case 'monthly':
-			result = wage;
-			break;
-		case 'yearly':
-			result = wage / 12;
-			break;
-		default:
-			// The mode should always be set, but if something goes wrong, set monthly salary to 0 and log error
-			result = 0;
-			console.error('error');
-			break;
+	case 'hourly':
+		result = wage * hours * weeksPerMonth;
+		break;
+	case 'weekly':
+		result = wage * weeksPerMonth;
+		break;
+	case 'monthly':
+		result = wage;
+		break;
+	case 'yearly':
+		result = wage / 12;
+		break;
+	default:
+		// The mode should always be set, but if something goes wrong, set monthly salary to 0 and log error
+		result = 0;
+		console.error('error');
+		break;
 	}
 	return result;
 }

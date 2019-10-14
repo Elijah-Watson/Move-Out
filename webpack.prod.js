@@ -45,6 +45,12 @@ module.exports = merge(common, {
 	module: {
 		rules: [
 			{
+				test: /\.js?$/,
+				exclude: /(node_modules|build)/,
+				enforce: 'pre',
+				use: ['eslint-loader'],
+			},
+			{
 				test: /\.css$/,
 				use: [
 					MiniCssExtractPlugin.loader,

@@ -26,7 +26,7 @@ export class PopupBubble {
 			right: anchor.offsetLeft + anchor.offsetWidth + anchorPadding.right,
 			bottom: anchor.offsetTop + anchor.offsetHeight + anchorPadding.bottom,
 			left: anchor.offsetLeft - anchorPadding.left
-		}
+		};
 
 		// Standard -> Left
 		popupText.style.left = anchorPosition.right + 'px';
@@ -67,8 +67,8 @@ export class PopupBubble {
 		// Used to prevent duplicate event listeners
 		let resizeEventHandler = () => {
 			this.positioner(this.popupText, this.popupButton, this.viewportPadding, this.anchorPadding);
-		}
-		this.popupButton.addEventListener('click', e => {
+		};
+		this.popupButton.addEventListener('click', () => {
 			if (this.popupText.classList.contains('hidden')) {
 				this.show();
 				this.positioner(this.popupText, this.popupButton, this.viewportPadding, this.anchorPadding);

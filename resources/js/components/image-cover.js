@@ -29,7 +29,7 @@ export class ImageCover {
 		this.image.style.transform = 'translate(-50%, -50%)';
 
 		// Recalculate when window is resized
-		window.addEventListener('resize', e => {
+		window.addEventListener('resize', () => {
 			this.formatImage();
 		});
 
@@ -37,7 +37,7 @@ export class ImageCover {
 		if (this.image.complete) {
 			this.formatImage();
 		} else {
-			this.image.addEventListener('load', e => {
+			this.image.addEventListener('load', () => {
 				this.formatImage();
 			});
 		}
