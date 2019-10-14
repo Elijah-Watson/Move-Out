@@ -625,7 +625,7 @@ select.state-select {
 .site-nav .site-nav-link {
 	display: block;
 	text-decoration: none;
-	color: hsl(199, 100%, 25%);
+	color: hsl(199, 100%, 18%);
 	text-transform: uppercase;
 	padding: 1em 2em;
 	border-bottom: 0;
@@ -635,12 +635,12 @@ select.state-select {
 }
 
 .site-nav .site-nav-link:hover {
-	color: hsl(199, 100%, 10%);
+	color: hsl(199, 100%, 8%);
 	text-decoration: none;
 }
 
 .site-nav .site-nav-link--selected {
-	color: hsl(199, 100%, 10%);
+	color: hsl(199, 100%, 8%);
 	border-bottom: 0.2em solid hsl(14, 100%, 57%);
 }
 
