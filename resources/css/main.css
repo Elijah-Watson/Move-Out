@@ -585,7 +585,7 @@ select.state-select {
 }
 
 .site-header .site-title {
-	font-weight: bold;
+	height: 1.5em;
 }
 
 .site-nav {

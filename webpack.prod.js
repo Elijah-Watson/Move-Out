@@ -9,6 +9,7 @@ const OptimizeCssAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const TerserPlugin = require('terser-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const { htmlPages } = require('./webpack.globals');
+const CopyPlugin = require('copy-webpack-plugin');
 
 module.exports = merge(common, {
 	mode: 'production',
@@ -29,7 +30,19 @@ module.exports = merge(common, {
 			]
 		}),
 		new MiniCssExtractPlugin({ filename: 'main.[contentHash].css' }),
-		new CleanWebpackPlugin()
+		new CleanWebpackPlugin(),
+		new CopyPlugin([
+			{ from: 'android-chrome-192x192.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'android-chrome-384x384.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'apple-touch-icon.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'browserconfig.xml', to: '[name].[ext]', toType: 'template' },
+			{ from: 'favicon-16x16.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'favicon-32x32.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'favicon.ico', to: '[name].[ext]', toType: 'template' },
+			{ from: 'mstile-150x150.png', to: '[name].[ext]', toType: 'template' },
+			{ from: 'safari-pinned-tab.svg', to: '[name].[ext]', toType: 'template' },
+			{ from: 'site.webmanifest', to: '[name].[ext]', toType: 'template' }
+		])
 	].concat(Object.keys(htmlPages).map(function (id) {
 		return new HtmlWebpackPlugin({
 			template: htmlPages[id].file,
