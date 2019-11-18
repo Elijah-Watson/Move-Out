@@ -1,6 +1,7 @@
 // Each function takes in an input and checks to make sure it is valid
 // If it is not, the input will be marked
 // If it is, the input will be converted into the appropriate format for calculations and returned
+// Additionally, the number format in the input is updated to a standard format
 export function validateCurrencyInput(input) {
 	let value = input.value;
 	let result;
@@ -13,6 +14,7 @@ export function validateCurrencyInput(input) {
 		if (matches) {
 			let match = matches[0];
 			result = parseFloat(match.replace(/[^0-9.]/g, ''));
+			input.value = result.toLocaleString('en-US', { style: 'currency', currency: 'USD' });
 			input.classList.remove('invalid');
 		} else {
 			result = null;
